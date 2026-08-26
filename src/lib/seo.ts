@@ -29,7 +29,7 @@ export interface SeoProps {
    * view of another and should canonicalize to it instead of itself.
    */
   canonical?: string;
-  /** Keeps this page out of search results (e.g. `/thank-you`, `/demos/*`). Defaults to `false`. */
+  /** Keeps this page out of search results (e.g. `/thank-you`). Defaults to `false`. */
   noindex?: boolean;
   /** Rarely needed on its own — usually only combined with `noindex`. Defaults to `false`. */
   nofollow?: boolean;

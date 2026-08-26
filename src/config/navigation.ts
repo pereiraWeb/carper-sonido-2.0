@@ -1,5 +1,3 @@
-import { includeDemos } from './site';
-
 export interface NavItem {
   label: string;
   href: string;
@@ -7,24 +5,8 @@ export interface NavItem {
   children?: NavItem[];
 }
 
-export const demoNavigation: NavItem[] = [
-  { label: 'Centered Hero', href: '/demos/centered-hero' },
-  { label: 'Split Hero', href: '/demos/split-hero' },
-  { label: 'Background Hero', href: '/demos/background-hero' },
-  { label: 'Minimal Hero', href: '/demos/minimal-hero' },
-  { label: 'Stats Hero', href: '/demos/features-hero' },
-  { label: 'Team Spotlight', href: '/demos/team-spotlight' },
-  { label: 'Testimonials Wall', href: '/demos/testimonials-wall' },
-  { label: 'FAQ Focus', href: '/demos/faq-focused' },
-  { label: 'Contact Cards', href: '/demos/contact-cards' },
-  { label: 'Component Gallery', href: '/demos/component-gallery' },
-];
-
 /**
- * Main nav used by every header variant. The "Demos" dropdown is only
- * included when `includeDemos` is true (local `astro dev`, or a build with
- * `INCLUDE_DEMOS=true`) — so a production deploy never links to gallery
- * pages that aren't even built. See README section 16.
+ * Main nav used by every header variant.
  */
 export const mainNavigation: NavItem[] = [
   { label: 'Inicio', href: '/' },
@@ -40,7 +22,6 @@ export const mainNavigation: NavItem[] = [
     ],
   },
   { label: 'Contacto', href: '/contacto' },
-  ...(includeDemos ? [{ label: 'Demos', href: '/demos', children: demoNavigation }] : []),
 ];
 
 /** Canonical legal routes, reused wherever a legal page is linked (e.g. `ConsentCheckbox`'s privacy policy link). */

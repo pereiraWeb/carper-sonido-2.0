@@ -2,15 +2,8 @@
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 import sitemap from '@astrojs/sitemap';
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { business } from './src/config/business.ts';
 import { getConfigIssues } from './src/lib/configCheck.ts';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const demosDir = path.join(__dirname, 'src/pages/demos');
-const hiddenDemosDir = path.join(__dirname, 'src/pages/_demos');
 
 /**
  * Fails `astro build` (production builds, including on Vercel) if
@@ -37,65 +30,6 @@ function productionConfigGuard() {
           `\nProduction build blocked: src/config/business.ts still has starter placeholder values:\n${details}\n\n` +
             'Fix these before publishing, or set SKIP_CONFIG_GUARD=true to bypass on purpose (e.g. a staging/demo build).\n',
         );
-      },
-    },
-  };
-}
-
-/**
- * Keeps `src/pages/demos/` out of production builds by renaming the folder
- * to `_demos` (Astro ignores underscore-prefixed paths) before routes are
- * discovered, then restoring it afterwards. That way unused gallery-only
- * component variants never enter the production bundle — their CSS/JS is
- * only pulled in by pages that import them, and without the demo pages
- * those imports simply aren't in the graph.
- *
- * Always available during `astro dev`. Set `INCLUDE_DEMOS=true` to also
- * keep them in a build (e.g. a staging deploy that still needs the gallery).
- * Restores on `astro:build:done` and on process exit so an interrupted
- * build can't leave the folder permanently renamed.
- */
-function excludeDemosInProduction() {
-  let renamed = false;
-
-  const restore = () => {
-    if (!renamed) return;
-    if (fs.existsSync(hiddenDemosDir) && !fs.existsSync(demosDir)) {
-      fs.renameSync(hiddenDemosDir, demosDir);
-    }
-    renamed = false;
-  };
-
-  return {
-    name: 'exclude-demos-in-production',
-    hooks: {
-      /** @param {{ command: 'dev' | 'build' | 'preview' | 'sync'; logger: { info: (msg: string) => void; warn: (msg: string) => void } }} opts */
-      'astro:config:setup': ({ command, logger }) => {
-        // Recover from a previous interrupted build that left the folder renamed.
-        if (fs.existsSync(hiddenDemosDir) && !fs.existsSync(demosDir)) {
-          fs.renameSync(hiddenDemosDir, demosDir);
-          logger.info('Restored src/pages/demos/ left behind by an interrupted build.');
-        }
-
-        if (command !== 'build') return;
-        if (process.env.INCLUDE_DEMOS === 'true') {
-          logger.info('INCLUDE_DEMOS=true — keeping src/pages/demos/ in this build.');
-          return;
-        }
-        if (!fs.existsSync(demosDir)) return;
-        if (fs.existsSync(hiddenDemosDir)) {
-          logger.warn('src/pages/_demos/ already exists — leaving demos as-is.');
-          return;
-        }
-        fs.renameSync(demosDir, hiddenDemosDir);
-        renamed = true;
-        process.once('exit', restore);
-        logger.info(
-          'Excluded src/pages/demos/ from this production build (set INCLUDE_DEMOS=true to keep them).',
-        );
-      },
-      'astro:build:done': () => {
-        restore();
       },
     },
   };
@@ -155,12 +89,10 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      // Keep internal/dev-only routes out of the sitemap even if someone
-      // forgets to delete `src/pages/demos/` before launching, and out of
-      // the conversion-tracking `/thank-you` page (it's not content to rank).
-      filter: (page) => !page.includes('/demos') && !page.includes('/thank-you'),
+      // Keep the conversion-tracking `/thank-you` page out of the sitemap
+      // (it's not content to rank).
+      filter: (page) => !page.includes('/thank-you'),
     }),
-    excludeDemosInProduction(),
     productionConfigGuard(),
   ],
 });
