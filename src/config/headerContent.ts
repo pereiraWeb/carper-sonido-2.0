@@ -7,14 +7,14 @@ export interface HeaderContentConfig {
 /** Editable copy for every component in `src/components/header/`. */
 export const headerContent: HeaderContentConfig = {
   cta: {
-    ctaText: 'Get in touch',
-    ctaHref: '/contact',
+    ctaText: 'Contacto',
+    ctaHref: '/contacto',
   },
   minimal: {
-    linkText: 'Contact',
-    linkHref: '/contact',
+    linkText: 'Contacto',
+    linkHref: '/contacto',
   },
   topBar: {
-    message: 'Available for new projects',
+    message: 'Sonido profesional en Vigo · +34 986 17 76 21',
   },
 };

@@ -1,14 +1,11 @@
 ---
 import BusinessLayout from './BusinessLayout.astro';
-import Breadcrumbs, { type BreadcrumbItem } from '../components/ui/Breadcrumbs.astro';
 import PageHeader from '../components/ui/PageHeader.astro';
 import type { SeoProps } from '../lib/seo';
 
 /**
  * For plain "interior" pages that don't have their own Hero component — it
- * adds the breadcrumb trail and a single `<h1>` (via `PageHeader`) on top of
- * `BusinessLayout`, so every such page gets both automatically instead of
- * repeating the same two lines everywhere.
+ * adds a single `<h1>` (via `PageHeader`) on top of `BusinessLayout`.
  *
  * Header/footer overrides still work exactly like `BusinessLayout` — pass
  * `<HeaderX slot="header" />` / `<FooterX slot="footer" />` as children.
@@ -18,10 +15,6 @@ export interface Props extends SeoProps {
 	heading?: string;
 	/** Visible description shown under the `<h1>`. Defaults to the SEO `description`. */
 	headingDescription?: string;
-	/** Breadcrumb trail *after* the implicit "Home" link, e.g. `[{ label: 'About Us' }]`. Omit entirely to hide breadcrumbs. */
-	breadcrumbs?: BreadcrumbItem[];
-	/** Label for the first, implicit breadcrumb. Defaults to `"Home"`. */
-	homeLabel?: string;
 	/** Set to `false` for a page that renders its own `<h1>` and doesn't need the generic `PageHeader`. Defaults to `true`. */
 	showPageHeader?: boolean;
 }
@@ -29,8 +22,6 @@ export interface Props extends SeoProps {
 const {
 	heading,
 	headingDescription,
-	breadcrumbs,
-	homeLabel = 'Home',
 	showPageHeader = true,
 	...seoProps
 } = Astro.props;
@@ -38,9 +29,6 @@ const { title, description } = seoProps;
 ---
 
 <BusinessLayout {...seoProps}>
-	<slot name="header" slot="header" />
-	<slot name="footer" slot="footer" />
-	{breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={[{ label: homeLabel, href: '/' }, ...breadcrumbs]} />}
 	{showPageHeader && <PageHeader title={heading ?? title} description={headingDescription ?? description} />}
 	<slot />
 </BusinessLayout>

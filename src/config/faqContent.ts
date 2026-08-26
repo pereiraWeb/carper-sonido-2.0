@@ -4,10 +4,36 @@ export interface FaqItem {
 }
 
 export const faqs: FaqItem[] = [
-  { question: 'What services do you offer?', answer: 'See the Services section above for an overview of everything we can help you with.' },
-  { question: 'How can I contact you?', answer: 'Use the contact form or the details on the Contact page and we will get back to you shortly.' },
-  { question: 'How long does a typical project take?', answer: 'It depends on scope, but most projects are delivered within a few weeks of kickoff.' },
-  { question: 'Do you offer ongoing support?', answer: 'Yes, we offer maintenance and support plans after your project goes live.' },
+  {
+    question: '¿Qué servicios de sonido ofrecéis en Vigo y Pontevedra?',
+    answer:
+      'Alquiler de sonido e iluminación, instalaciones y sonorizaciones, control de ruidos, servicio técnico multi-marca y equipos para videoconferencia, streaming y teletrabajo. Trabajamos en Vigo, Pontevedra y el resto de Galicia.',
+  },
+  {
+    question: '¿Dónde está el taller de Carper Sonido en Vigo?',
+    answer:
+      'En C/ Pi y Margal 43 Bajo, 36202 Vigo, Pontevedra. Tel: +34 986 17 76 21. Email: info@carpersonido.com. El servicio técnico atiende también sat@carpersonido.com.',
+  },
+  {
+    question: '¿Hacéis control de ruidos en Pontevedra y fuera de Vigo?',
+    answer:
+      'Sí. Instalamos limitadores y registradores en Vigo, Pontevedra y toda Galicia. mas de 50 empresas confían en Carper Sonido.',
+  },
+  {
+    question: '¿Alquiláis sonido e iluminación para eventos en Vigo?',
+    answer:
+      'Sí. Alquilamos altavoces, mesas de mezcla, microfonía, controladoras DJ, pantallas, proyectores e iluminación para conferencias, fiestas y conciertos en Vigo y Pontevedra.',
+  },
+  {
+    question: '¿Reparáis equipos de otras marcas en Vigo?',
+    answer:
+      'Sí. Servicio técnico multi-marca para equipos de sonido, iluminación e imagen. Reparamos mesas de mezclas, sistemas de micrófono inalámbrico, altavoces, etapas de potencia y ecualizadores, con garantía de 3 meses tras la reparación.',
+  },
+  {
+    question: '¿Hacéis instalaciones de sonido para locales en Vigo y Pontevedra?',
+    answer:
+      'Sí. Instalamos sonido profesional, iluminación y audiovisuales en locales, hoteles y comercios de Vigo y Pontevedra, adaptándonos al presupuesto y trabajando con primeras marcas.',
+  },
 ];
 
 export interface FaqContentConfig {
@@ -24,24 +50,24 @@ export interface FaqContentConfig {
  */
 export const faqContent: FaqContentConfig = {
   accordion: {
-    title: 'Frequently Asked Questions',
+    title: 'Preguntas frecuentes sobre sonido en Vigo',
   },
   twoColumn: {
     eyebrow: 'FAQ',
-    title: 'Common questions',
+    title: 'Preguntas frecuentes',
   },
   cards: {
     eyebrow: 'FAQ',
-    title: 'Answers to common questions',
+    title: 'Preguntas frecuentes',
   },
   split: {
     eyebrow: 'FAQ',
-    title: 'Still have questions?',
-    description: "We're happy to walk you through anything that isn't covered here.",
-    ctaText: 'Contact us',
-    ctaHref: '/contact',
+    title: '¿Tienes más dudas?',
+    description: 'Escríbenos desde Vigo o Pontevedra y te ayudamos a elegir el equipo o el servicio que necesitas.',
+    ctaText: 'Contactar',
+    ctaHref: '/contacto',
   },
   minimal: {
-    title: 'Frequently Asked Questions',
+    title: 'Preguntas frecuentes',
   },
 };

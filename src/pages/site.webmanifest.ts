@@ -17,9 +17,9 @@ export const GET: APIRoute = () => {
 		description: business.description,
 		start_url: '/',
 		display: 'standalone',
-		background_color: '#ffffff',
+		background_color: '#121212',
 		// Keep in sync with `--color-primary` in `src/styles/tokens.css`.
-		theme_color: '#0d9488',
+		theme_color: '#121212',
 		icons: [
 			{
 				src: '/favicon.svg',

@@ -1,22 +1,26 @@
 ---
+import BusinessLayout from '../layouts/BusinessLayout.astro';
+import HeroBackground from '../components/hero/HeroBackground.astro';
 import { ServicesShowcase } from '../components/services';
 import { FaqAccordion } from '../components/faq';
 import { faqs } from '../config/faqContent';
 import FaqSchema from '../components/seo/FaqSchema.astro';
-import HeroBackground from '../components/hero/HeroBackground.astro';
-import BusinessLayout from '../layouts/BusinessLayout.astro';
 ---
 
-<BusinessLayout title="Services" description="Discover the services we offer.">
+<BusinessLayout
+	title="Servicios de sonido en Vigo y Pontevedra"
+	description="Alquiler de sonido e iluminación, instalaciones, control de ruidos, servicio técnico multi-marca y equipos para videoconferencia en Vigo y Pontevedra."
+>
 	<HeroBackground
 		align="center"
-		height="360px"
-		title="Services"
-		description="Discover the services we offer."
-		showbutton={false}
+		image="/img/2018/10/adi-goldstein-707654-unsplash.jpg"
+		title="Servicios de sonido en Vigo y Pontevedra"
+		description="Alquiler, instalaciones, control de ruidos, servicio técnico y equipos para videoconferencia."
+		showbutton={true}
+		primaryCtaText="Solicitar presupuesto"
+		primaryCtaHref="/contacto"
 	/>
 	<ServicesShowcase />
 	<FaqAccordion />
-	<!-- Matches the FAQ content rendered visibly above via `FaqAccordion`. -->
 	<FaqSchema items={faqs} />
 </BusinessLayout>

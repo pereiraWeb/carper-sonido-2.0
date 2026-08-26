@@ -3,11 +3,12 @@ import FormField from './FormField.astro';
 import ConsentCheckbox from './ConsentCheckbox.astro';
 import FormStatus from './FormStatus.astro';
 import Button from '../ui/Button.astro';
-import { contactFieldLabels } from '../../config/contactContent';
+import { contactFieldLabels, contactServiceOptions } from '../../config/contactContent';
 import { contactFieldLimits } from '../../lib/forms';
 import { contactFormText } from '../../config/formContent';
 import { HONEYPOT_FIELD_NAME } from '../../lib/antispam';
 import { business } from '../../config/business';
+import { integrations } from '../../config/integrations';
 
 /**
  * Shared, functional contact form used by every `Contact*` variant. Handles
@@ -15,6 +16,9 @@ import { business } from '../../config/business';
  * the source of truth), submission states, a success/error status message
  * and spam protection, while each variant keeps its own visual style by
  * overriding these classes in its own `<style>` block.
+ *
+ * When `PUBLIC_FORMSPREE_ID` is set, submissions go to Formspree instead of
+ * `/api/contact`. Leave it empty until the Formspree form is ready.
  */
 export interface Props {
 	submitText?: string;
@@ -46,10 +50,13 @@ export interface Props {
 	submitClass?: string;
 }
 
+const formspreeId = integrations.formspree.formId?.trim();
+const formspreeEndpoint = formspreeId ? `https://formspree.io/f/${formspreeId}` : '';
+
 const {
 	submitText = contactFormText.submitText,
 	submittingText = contactFormText.submittingText,
-	action = '/api/contact',
+	action = formspreeEndpoint || '/api/contact',
 	successRedirect = '/thank-you',
 	showConsent = true,
 	inlineNameEmail = false,
@@ -67,6 +74,7 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 	novalidate
 	data-contact-form
 	data-endpoint={action}
+	data-provider={formspreeEndpoint && action === formspreeEndpoint ? 'formspree' : 'api'}
 	data-submitting-text={submittingText}
 	data-success-redirect={successRedirect}
 >
@@ -81,15 +89,6 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 			required
 		/>
 		<FormField
-			type="email"
-			name="email"
-			label={contactFieldLabels.email}
-			placeholder={placeholderLabels ? contactFieldLabels.email : undefined}
-			hideLabel={placeholderLabels}
-			maxLength={contactFieldLimits.email.max}
-			required
-		/>
-		<FormField
 			type="tel"
 			name="phone"
 			label={contactFieldLabels.phone}
@@ -99,6 +98,34 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 			required
 		/>
 	</div>
+	<div class:list={['contact-form__row', { 'contact-form__row--inline': true }]}>
+		<FormField
+			type="select"
+			name="service"
+			label={contactFieldLabels.service}
+			placeholder={contactFieldLabels.servicePlaceholder}
+			hideLabel={placeholderLabels}
+			options={[...contactServiceOptions]}
+			required
+		/>
+		<FormField
+			type="email"
+			name="email"
+			label={contactFieldLabels.email}
+			placeholder={placeholderLabels ? contactFieldLabels.email : undefined}
+			hideLabel={placeholderLabels}
+			maxLength={contactFieldLimits.email.max}
+			required
+		/>
+	</div>
+	<FormField
+		type="text"
+		name="subject"
+		label={contactFieldLabels.subject}
+		placeholder={placeholderLabels ? contactFieldLabels.subject : undefined}
+		hideLabel={placeholderLabels}
+		maxLength={contactFieldLimits.subject.max}
+	/>
 	<FormField
 		type="textarea"
 		name="message"
@@ -106,7 +133,7 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 		placeholder={placeholderLabels ? contactFieldLabels.message : undefined}
 		hideLabel={placeholderLabels}
 		maxLength={contactFieldLimits.message.max}
-		rows={4}
+		rows={5}
 		required
 	/>
 
@@ -114,6 +141,7 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 	<div class="contact-form__honeypot" aria-hidden="true">
 		<label for={honeypotId}>{contactFormText.honeypotLabel}</label>
 		<input type="text" id={honeypotId} name={HONEYPOT_FIELD_NAME} tabindex="-1" autocomplete="off" />
+		<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
 	</div>
 
 	{showConsent && <ConsentCheckbox />}
@@ -147,18 +175,24 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 			const submittingText = form.dataset.submittingText || idleText;
 			const successRedirect = form.dataset.successRedirect || '';
 			const endpoint = form.dataset.endpoint || '';
+			const provider = form.dataset.provider || 'api';
 
 			const nameInput = form.querySelector<HTMLInputElement>('[name="name"]');
 			const emailInput = form.querySelector<HTMLInputElement>('[name="email"]');
 			const phoneInput = form.querySelector<HTMLInputElement>('[name="phone"]');
 			const messageInput = form.querySelector<HTMLTextAreaElement>('[name="message"]');
+			const serviceInput = form.querySelector<HTMLSelectElement>('[name="service"]');
+			const subjectInput = form.querySelector<HTMLInputElement>('[name="subject"]');
 			const honeypotInput = form.querySelector<HTMLInputElement>(`[name="${HONEYPOT_FIELD_NAME}"]`);
+			const gotchaInput = form.querySelector<HTMLInputElement>('[name="_gotcha"]');
 			const consentInput = form.querySelector<HTMLInputElement>('input[type="checkbox"][name="consent"]');
 
 			const setFieldError = (name: string, message?: string) => {
 				const field = form.querySelector<HTMLElement>(`[data-field-name="${name}"]`);
 				const error = field?.querySelector<HTMLElement>('[data-field-error]');
-				const input = field?.querySelector<HTMLInputElement | HTMLTextAreaElement>('input, textarea');
+				const input = field?.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
+					'input, textarea, select',
+				);
 				if (!field || !error || !input) return;
 
 				if (message) {
@@ -186,17 +220,23 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 				setFieldError('email');
 				setFieldError('phone');
 				setFieldError('message');
+				setFieldError('service');
+				setFieldError('subject');
 				setConsentError(true);
 			};
 
 			// As soon as the visitor starts fixing a field, drop its error state —
 			// without ever touching the values already typed in other fields.
-			[nameInput, emailInput, phoneInput, messageInput].forEach((input) => {
+			[nameInput, emailInput, phoneInput, messageInput, serviceInput, subjectInput].forEach((input) => {
 				if (!input) return;
 				input.addEventListener('input', () => {
 					const fieldName = input.closest<HTMLElement>('[data-field-name]')?.dataset.fieldName;
 					if (fieldName) setFieldError(fieldName);
 					if (status && status.dataset.state === 'error') status.hidden = true;
+				});
+				input.addEventListener('change', () => {
+					const fieldName = input.closest<HTMLElement>('[data-field-name]')?.dataset.fieldName;
+					if (fieldName) setFieldError(fieldName);
 				});
 			});
 			consentInput?.addEventListener('change', () => {
@@ -250,6 +290,8 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 					email: emailInput?.value ?? '',
 					phone: phoneInput?.value ?? '',
 					message: messageInput?.value ?? '',
+					service: serviceInput?.value ?? '',
+					subject: subjectInput?.value ?? '',
 				};
 
 				// Client-side validation is a UX helper only — inputs keep their values so
@@ -259,6 +301,8 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 				setFieldError('email', result.errors.email);
 				setFieldError('phone', result.errors.phone);
 				setFieldError('message', result.errors.message);
+				setFieldError('service', result.errors.service);
+				setFieldError('subject', result.errors.subject);
 
 				const consentValid = !consentInput || !consentInput.required || consentInput.checked;
 				setConsentError(consentValid);
@@ -274,10 +318,17 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 
 				// Built after client validation passes: at this point the payload is
 				// known-good shape-wise, so it's fine to also carry the honeypot/consent
-				// extras the endpoint expects alongside the three real fields.
+				// extras the endpoint expects alongside the real fields.
 				const payload: Record<string, unknown> = { ...contactData };
 				if (honeypotInput) payload[HONEYPOT_FIELD_NAME] = honeypotInput.value;
 				if (consentInput) payload.consent = consentInput.checked;
+				// Formspree-only extras. `/api/contact` rejects unknown keys, so never send them there.
+				if (provider === 'formspree') {
+					payload._subject = contactData.subject
+						? `${contactData.subject} — ${contactData.name}`
+						: `Consulta web Carper Sonido (${contactData.service})`;
+					if (gotchaInput) payload._gotcha = gotchaInput.value;
+				}
 
 				try {
 					let response: ContactResponse | null = null;
@@ -285,27 +336,42 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 					if (endpoint) {
 						const fetchResponse = await fetch(endpoint, {
 							method: 'POST',
-							headers: { 'Content-Type': 'application/json' },
+							headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 							body: JSON.stringify(payload),
 						});
-						response = await fetchResponse.json().catch(() => null);
+						const raw = await fetchResponse.json().catch(() => null);
 
-						if (!fetchResponse.ok || !response?.success) {
-							setFormState('error');
-							if (response?.errors) {
-								setFieldError('name', response.errors.name);
-								setFieldError('email', response.errors.email);
-								setFieldError('phone', response.errors.phone);
-								setFieldError('message', response.errors.message);
-								if (response.errors.consent) setConsentError(false, response.errors.consent);
-							}
-							showStatus('error', response?.message);
-							if (response?.errors && Object.keys(response.errors).length > 0) {
-								focusFirstInvalid();
-							} else {
+						if (provider === 'formspree') {
+							const formspreeOk = fetchResponse.ok && raw && raw.ok !== false;
+							if (!formspreeOk) {
+								setFormState('error');
+								showStatus('error', raw?.error || raw?.errors?.[0]?.message);
 								focusStatus();
+								return;
 							}
-							return;
+							response = { success: true, message: raw?.next || '' };
+						} else {
+							response = raw as ContactResponse | null;
+
+							if (!fetchResponse.ok || !response?.success) {
+								setFormState('error');
+								if (response?.errors) {
+									setFieldError('name', response.errors.name);
+									setFieldError('email', response.errors.email);
+									setFieldError('phone', response.errors.phone);
+									setFieldError('message', response.errors.message);
+									setFieldError('service', response.errors.service);
+									setFieldError('subject', response.errors.subject);
+									if (response.errors.consent) setConsentError(false, response.errors.consent);
+								}
+								showStatus('error', response?.message);
+								if (response?.errors && Object.keys(response.errors).length > 0) {
+									focusFirstInvalid();
+								} else {
+									focusStatus();
+								}
+								return;
+							}
 						}
 					} else {
 						// No endpoint configured: simulate a network round-trip so the UX stays realistic.

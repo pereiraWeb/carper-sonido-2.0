@@ -4,7 +4,7 @@ import Icon, { type IconName } from '../ui/Icon.astro';
 import AgencyCredit from '../ui/AgencyCredit.astro';
 import BrandMark from '../ui/BrandMark.astro';
 import { business } from '../../config/business';
-import { mainNavigation, legalNavigation } from '../../config/navigation';
+import { footerServiceLinks, legalNavigation } from '../../config/navigation';
 import { footerContent } from '../../config/footerContent';
 import { backgroundStyle, type BackgroundProps } from '../../lib/background';
 
@@ -35,24 +35,25 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 	<Container class="footer-columns__grid">
 		<div>
 			<a href="/" class="footer-columns__brand">
-				<BrandMark logo={logo} logoAlt={logoAlt} class="footer-columns__logo" />
+				<BrandMark logo={logo} logoAlt={logoAlt} variant="dark" class="footer-columns__logo" />
 			</a>
-			<p class="footer-columns__tagline">{business.tagline}</p>
+			<p class="footer-columns__tagline">
+				{business.address.street}<br />
+				{business.address.postalCode} {business.address.city} {business.address.region}<br />
+				<a href={`mailto:${business.email}`}>{business.email}</a><br />
+				<a href={`tel:${business.phone}`}>{business.phone}</a>
+			</p>
+		</div>
+		<div>
+			<h3>{footerContent.columns.missionHeading}</h3>
+			<p class="footer-columns__tagline">{footerContent.columns.mission}</p>
 		</div>
 		<div>
 			<h3>{linksHeading}</h3>
 			<ul>
-				{mainNavigation.map((item) => (
+				{footerServiceLinks.map((item) => (
 					<li><a href={item.href}>{item.label}</a></li>
 				))}
-			</ul>
-		</div>
-		<div>
-			<h3>{contactHeading}</h3>
-			<ul class="footer-columns__contact">
-				<li>{business.email}</li>
-				<li>{business.phone}</li>
-				<li>{business.address.city}, {business.address.country}</li>
 			</ul>
 		</div>
 		<div>
@@ -74,10 +75,15 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 					))}
 				</ul>
 			)}
+			<h3 class="footer-columns__contact-heading">{contactHeading}</h3>
+			<ul class="footer-columns__contact">
+				<li><a href={`mailto:${business.email}`}>{business.email}</a></li>
+				<li><a href={`tel:${business.phone}`}>{business.phone}</a></li>
+			</ul>
 		</div>
 	</Container>
 	<Container class="footer-columns__bottom">
-		<p>&copy; {year} {business.legalName}. All rights reserved.</p>
+		<p>&copy; {year} Carper Sonido. {footerContent.columns.copyright}.</p>
 		<ul class="footer-columns__legal">
 			{legalNavigation.map((item) => (
 				<li><a href={item.href}>{item.label}</a></li>
@@ -89,8 +95,14 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 
 <style>
 	.footer-columns {
-		border-top: 1px solid var(--color-border);
-		background-color: var(--color-surface);
+		border-top: 1px solid #444444;
+		background-color: #121212;
+		color: #e0e0e0;
+		--color-background: #121212;
+		--color-surface: #1a1a1a;
+		--color-text: #e0e0e0;
+		--color-text-muted: #b0b0b0;
+		--color-border: #444444;
 	}
 
 	:global(.footer-columns__grid) {
@@ -109,18 +121,29 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 
 	/* :global() because the `<img>` is now rendered by the `BrandMark` child component, which is outside this component's scoped-CSS boundary. */
 	:global(.footer-columns__logo) {
-		height: 2rem;
+		height: 3.1rem;
 		width: auto;
+		max-width: min(9.5rem, 70vw);
 	}
 
 	.footer-columns__tagline {
 		margin: 0;
 		color: var(--color-text-muted);
+		line-height: 1.6;
+	}
+
+	.footer-columns__tagline a:hover,
+	:global(.footer-columns__grid) a:hover,
+	.footer-columns__legal a:hover {
+		color: var(--color-accent);
 	}
 
 	:global(.footer-columns__grid) h3 {
 		margin: 0 0 var(--spacing-xs);
-		font-size: 0.95rem;
+		font-size: 0.8rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--color-text);
 	}
 
 	:global(.footer-columns__grid) ul {
@@ -136,6 +159,10 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 		color: var(--color-text-muted);
 	}
 
+	.footer-columns__contact-heading {
+		margin-top: var(--spacing-md) !important;
+	}
+
 	:global(.footer-columns__grid) .footer-columns__social {
 		flex-direction: row;
 		gap: 0.75rem;
@@ -143,11 +170,11 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 
 	.footer-columns__social a {
 		display: inline-flex;
-		color: var(--color-text-muted);
+		color: var(--color-on-media);
 	}
 
 	.footer-columns__social a:hover {
-		color: var(--color-primary);
+		color: var(--color-accent);
 	}
 
 	:global(.footer-columns__bottom) {

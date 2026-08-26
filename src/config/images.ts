@@ -22,5 +22,5 @@ export const imageFallbacks = {
 	 * not a raster image, so it never looks pixelated at any header/footer
 	 * size and never becomes the "huge PNG in the header" problem itself.
 	 */
-	logo: '/logos/logo-fallback.svg',
+	logo: '/img/carper-sonido-logo.png',
 } as const;

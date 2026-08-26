@@ -16,8 +16,11 @@ export interface LegalPagesContentConfig {
    * Update it every time you materially edit the legal content.
    */
   lastUpdated: string;
+  /** Hide the red "incomplete template" banner once legal copy is filled in. */
+  showTemplateNotice?: boolean;
 }
 
 export const legalPagesContent: LegalPagesContentConfig = {
-  lastUpdated: '2026-07-28',
+  lastUpdated: '2026-08-26',
+  showTemplateNotice: false,
 };

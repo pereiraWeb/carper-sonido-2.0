@@ -35,6 +35,15 @@ export interface IntegrationsConfig {
      */
     googleMapsApiKey?: string;
   };
+  formspree: {
+    /**
+     * Formspree form ID (the `xxxxxxxx` in `https://formspree.io/f/xxxxxxxx`).
+     * When set, the contact form posts there instead of `/api/contact`.
+     * Leave empty until the Formspree form is created — the built-in
+     * `/api/contact` endpoint keeps working in the meantime.
+     */
+    formId?: string;
+  };
 }
 
 export const integrations: IntegrationsConfig = {
@@ -46,5 +55,8 @@ export const integrations: IntegrationsConfig = {
   },
   maps: {
     googleMapsApiKey: import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY,
+  },
+  formspree: {
+    formId: import.meta.env.PUBLIC_FORMSPREE_ID,
   },
 };

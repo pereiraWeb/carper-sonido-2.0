@@ -1,5 +1,5 @@
 ---
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'inverse' | 'inverse-outline';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'inverse' | 'inverse-outline' | 'accent';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 export interface Props {
@@ -104,13 +104,14 @@ const classes = ['btn', `btn--${variant}`, `btn--${size}`, fullWidth && 'btn--fu
 	}
 
 	.btn--primary {
-		background-color: var(--color-primary);
+		background-color: var(--color-text);
 		color: var(--color-background);
 	}
 
 	.btn--secondary {
-		background-color: var(--color-secondary);
-		color: var(--color-background);
+		background-color: var(--color-surface);
+		color: var(--color-text);
+		border-color: var(--color-border);
 	}
 
 	.btn--outline {
@@ -124,13 +125,13 @@ const classes = ['btn', `btn--${variant}`, `btn--${size}`, fullWidth && 'btn--fu
 
 	.btn--ghost {
 		background-color: transparent;
-		color: var(--color-primary);
+		color: var(--color-text);
 	}
 
 	.btn--link {
 		padding: 0;
 		background-color: transparent;
-		color: var(--color-primary);
+		color: var(--color-text);
 	}
 
 	.btn--link:hover {
@@ -141,14 +142,19 @@ const classes = ['btn', `btn--${variant}`, `btn--${size}`, fullWidth && 'btn--fu
 
 	/* For use on dark/colored backgrounds (e.g. HeroBackground). */
 	.btn--inverse {
-		background-color: var(--color-background);
-		color: var(--color-primary);
+		background-color: var(--color-on-media);
+		color: var(--color-inverse);
+	}
+
+	.btn--accent {
+		background-color: var(--color-accent);
+		color: var(--color-inverse);
 	}
 
 	.btn--inverse-outline {
 		background-color: transparent;
-		border-color: color-mix(in srgb, var(--color-background) 60%, transparent);
-		color: var(--color-background);
+		border-color: color-mix(in srgb, var(--color-on-media) 70%, transparent);
+		color: var(--color-on-media);
 	}
 
 	.btn--full {

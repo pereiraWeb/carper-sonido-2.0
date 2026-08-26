@@ -70,29 +70,47 @@ export interface BusinessInfo {
 }
 
 export const business: BusinessInfo = {
-  name: 'Business Name',
-  legalName: 'Business Name S.L.',
-  tagline: 'A short tagline describing the business',
-  description: 'Generic business description used as a fallback for SEO metadata.',
-  email: 'info@example.com',
-  phone: '+1 234 567 890',
-  logo: '/logos/logo-fallback.svg',
-  logoWidth: 160,
-  logoHeight: 40,
+  name: 'Carper Sonido Profesional',
+  legalName: 'Jose Carlos Pereira Silva',
+  tagline: 'Sonido profesional en Vigo y Pontevedra.',
+  description:
+    'Sonido profesional en Vigo y Pontevedra: alquiler de sonido e iluminación, instalaciones, control de ruidos, servicio técnico multi-marca y equipos para videoconferencia. Más de 30 años en el sector.',
+  email: 'info@carpersonido.com',
+  phone: '+34 986 17 76 21',
+  logo: '/img/carper-sonido-logo.png',
+  logoDark: '/img/carper-sonido-logo.png',
+  logoWidth: 250,
+  logoHeight: 134,
   language: 'es-ES',
   address: {
-    street: 'Main Street 123',
-    city: 'City',
-    region: 'Region',
-    postalCode: '00000',
-    country: 'Country',
+    street: 'C/ Pi y Margal 43 Bajo',
+    city: 'Vigo',
+    region: 'Pontevedra',
+    postalCode: '36202',
+    country: 'España',
   },
-  hours: [{ days: 'Monday - Friday', hours: '9:00 - 18:00' }],
+  hours: [],
   social: {
-    facebook: '',
-    instagram: '',
-    linkedin: '',
+    facebook: 'https://www.facebook.com/Carper-Sonido-102586472187044',
+    instagram: 'https://instagram.com/carpersonido',
+    linkedin: 'https://www.linkedin.com/in/jose-carlos-pereira-silva-570251198/',
     twitter: '',
   },
-  siteUrl: 'https://example.com',
+  siteUrl: 'https://carpersonido.com',
 };
+
+/** Email específico del taller de servicio técnico, tal como aparece en la web actual. */
+export const satEmail = 'sat@carpersonido.com';
+
+/** Coordenadas aproximadas del local en C/ Pi y Margal 43, Vigo. */
+export const geoCoordinates = {
+  latitude: 42.2376,
+  longitude: -8.7209,
+};
+
+/** Áreas de servicio para SEO local y schema.org. */
+export const serviceAreas = [
+  { type: 'City', name: 'Vigo' },
+  { type: 'AdministrativeArea', name: 'Pontevedra' },
+  { type: 'AdministrativeArea', name: 'Galicia' },
+] as const;

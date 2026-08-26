@@ -138,7 +138,20 @@ export default defineConfig({
   // links/bookmarks/search results 301 to the new URL instead of 404ing —
   // e.g. `'/services/old-slug': '/services/new-slug'`. Astro turns these
   // into real redirects at build time.
-  redirects: {},
+  redirects: {
+    '/contact': '/contacto',
+    '/teletrabajo': '/services/teletrabajo',
+    '/instalaciones': '/services/instalaciones',
+    '/alquiler': '/services/alquiler',
+    '/alquileres-de-sonido-e-imagen': '/services/alquiler',
+    '/control-de-ruidos': '/services/control-de-ruidos',
+    '/servicio-tecnico': '/services/servicio-tecnico',
+    '/servicio-tecnico-2': '/services/servicio-tecnico',
+    '/aviso-legal': '/legal/legal-notice',
+    '/politica-de-privacidad': '/legal/privacy',
+    '/politica-de-cookies': '/legal/cookies',
+    '/marcas': '/',
+  },
 
   integrations: [
     sitemap({

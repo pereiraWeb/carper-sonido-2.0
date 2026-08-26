@@ -1,5 +1,5 @@
 ---
-import { business } from '../../config/business';
+import { business, geoCoordinates, serviceAreas } from '../../config/business';
 
 export interface Props {
 	name: string;
@@ -18,10 +18,30 @@ const jsonLd = {
 	description,
 	url: new URL(url, business.siteUrl).toString(),
 	image: image ? new URL(image, business.siteUrl).toString() : undefined,
+	serviceType: name,
+	areaServed: serviceAreas.map((area) => ({
+		'@type': area.type,
+		name: area.name,
+	})),
 	provider: {
-		'@type': 'Organization',
+		'@type': 'LocalBusiness',
 		name: business.name,
 		url: business.siteUrl,
+		telephone: business.phone,
+		email: business.email,
+		address: {
+			'@type': 'PostalAddress',
+			streetAddress: business.address.street,
+			addressLocality: business.address.city,
+			addressRegion: business.address.region,
+			postalCode: business.address.postalCode,
+			addressCountry: business.address.country,
+		},
+		geo: {
+			'@type': 'GeoCoordinates',
+			latitude: geoCoordinates.latitude,
+			longitude: geoCoordinates.longitude,
+		},
 	},
 };
 ---

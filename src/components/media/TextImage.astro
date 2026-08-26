@@ -90,13 +90,15 @@ const style = backgroundStyle({ backgroundColor, backgroundImage }, { '--text-im
 	   content width (like `Container`) — pass `fullWidth` to bleed it edge-to-edge. */
 	.text-image {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 		width: 100%;
 		max-width: var(--max-width);
 		margin-inline: auto;
 		padding-inline: var(--spacing-sm);
-		min-height: var(--text-image-height, 100vh);
-		gap: var(--spacing-xl)
+		padding-block: var(--spacing-lg);
+		min-height: 0;
+		gap: var(--spacing-xl);
+		align-items: center;
 	}
 
 	.text-image--full {
@@ -145,8 +147,13 @@ const style = backgroundStyle({ backgroundColor, backgroundImage }, { '--text-im
 
 	.text-image__media {
 		position: relative;
+		min-width: 0;
 		overflow: hidden;
-		min-height: 320px;
+		border: 1px solid var(--color-border);
+		border-radius: calc(var(--radius-base) * 2);
+		background: var(--color-surface);
+		aspect-ratio: 4 / 3;
+		min-height: 0;
 	}
 
 	/* :global() because the `<img>` is now rendered by the `ResponsiveImage` child component, which is outside this component's scoped-CSS boundary. */
@@ -173,7 +180,8 @@ const style = backgroundStyle({ backgroundColor, backgroundImage }, { '--text-im
 		}
 
 		.text-image__media {
-			min-height: 320px;
+			aspect-ratio: 16 / 10;
+			min-height: 0;
 		}
 
 		.text-image__content-inner {

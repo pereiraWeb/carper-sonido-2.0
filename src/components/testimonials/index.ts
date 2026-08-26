@@ -3,3 +3,4 @@ export { default as TestimonialsCentered } from './TestimonialsCentered.astro';
 export { default as TestimonialsSplit } from './TestimonialsSplit.astro';
 export { default as TestimonialsWall } from './TestimonialsWall.astro';
 export { default as TestimonialsMinimal } from './TestimonialsMinimal.astro';
+export { default as GoogleReviews } from './GoogleReviews.astro';

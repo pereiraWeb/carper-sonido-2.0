@@ -14,11 +14,11 @@ export interface TextImageContent {
  * component markup or logic.
  */
 export const textImageContent: TextImageContent = {
-  eyebrow: 'Featured',
-  title: 'A closer look at what we do',
+  eyebrow: 'Nuestra meta',
+  title: 'El mejor servicio y el mejor sonido',
   description:
-    'Pair a strong visual with a short message. Use this section anywhere you need to highlight a project, a feature or a moment of your story.',
-  ctaText: 'Learn more',
-  ctaHref: '/about',
-  height: '100vh',
+    'Con mas de 30 años en el sector del sonido profesional, Nuestra única meta es ofrecerte el mejor servicio y llevarte el mejor sonido.',
+  ctaText: 'Contactar',
+  ctaHref: '/contacto',
+  height: 'auto',
 };

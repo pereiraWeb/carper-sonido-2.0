@@ -3,13 +3,29 @@ export interface ContactFieldLabels {
   email: string;
   phone: string;
   message: string;
+  service: string;
+  subject: string;
+  servicePlaceholder: string;
 }
 
+export const contactServiceOptions = [
+  { value: 'tienda', label: 'Tienda' },
+  { value: 'control-de-ruidos', label: 'Control de ruidos' },
+  { value: 'alquileres', label: 'Alquileres' },
+  { value: 'instalaciones', label: 'Instalaciones' },
+  { value: 'servicio-tecnico', label: 'Servicio técnico' },
+] as const;
+
+export const contactServiceValues = contactServiceOptions.map((option) => option.value);
+
 export const contactFieldLabels: ContactFieldLabels = {
-  name: 'Nombre',
-  email: 'Correo electrónico',
-  phone: 'Teléfono',
-  message: 'Mensaje',
+  name: 'Tu nombre (requerido)',
+  email: 'Tu correo electrónico (requerido)',
+  phone: 'Tu Teléfono (requerido)',
+  message: 'Tu mensaje',
+  service: 'Servicio por el que nos contactas.',
+  subject: 'Asunto',
+  servicePlaceholder: '—Por favor, elige una opción—',
 };
 
 export interface ContactContentConfig {
@@ -49,40 +65,40 @@ export interface ContactContentConfig {
  */
 export const contactContent: ContactContentConfig = {
   split: {
-    title: 'Contact',
+    title: 'Ven a visitarnos!',
     submitText: 'Enviar',
-    emailLabel: 'Email',
-    phoneLabel: 'Teléfono',
+    emailLabel: 'Mail',
+    phoneLabel: 'Tel',
     addressLabel: 'Dirección',
     hoursLabel: 'Horario',
   },
   centered: {
-    eyebrow: 'Get in touch',
-    title: "Let's talk about your project",
-    description: 'Fill in the form below and we will get back to you as soon as possible.',
-    submitText: 'Enviar mensaje',
+    eyebrow: 'Contacto',
+    title: 'Ven a visitarnos!',
+    description: 'Cuéntanos qué necesitas y te respondemos lo antes posible.',
+    submitText: 'Enviar',
   },
   cards: {
-    eyebrow: 'Contact',
-    title: 'We would love to hear from you',
-    description: 'Reach out directly or send us a message using the form.',
+    eyebrow: 'Contacto',
+    title: 'Ven a visitarnos!',
+    description: 'Llámanos, escríbenos o pasa por el local en Vigo.',
     submitText: 'Enviar',
-    phoneLabel: 'Phone',
+    phoneLabel: 'Teléfono',
     emailLabel: 'Email',
-    addressLabel: 'Address',
+    addressLabel: 'Dirección',
   },
   minimal: {
-    title: 'Get in touch',
-    description: 'Send us a message and we will reply within one business day.',
+    title: 'Contacto',
+    description: 'Envíanos un mensaje y te responderemos lo antes posible.',
     submitText: 'Enviar',
   },
   stacked: {
-    eyebrow: 'Contact',
-    title: 'Get in touch with us',
-    description: 'Choose whatever works best for you, or fill in the form below.',
-    submitText: 'Enviar mensaje',
-    phoneLabel: 'Call us',
-    emailLabel: 'Email us',
-    addressLabel: 'Visit us',
+    eyebrow: 'Contacto',
+    title: 'Ven a visitarnos!',
+    description: 'Elige cómo quieres hablar con nosotros, o rellena el formulario.',
+    submitText: 'Enviar',
+    phoneLabel: 'Llámanos',
+    emailLabel: 'Escríbenos',
+    addressLabel: 'Visítanos',
   },
 };

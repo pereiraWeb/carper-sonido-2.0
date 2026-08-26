@@ -1,15 +1,15 @@
 ---
 import BusinessLayout from './BusinessLayout.astro';
-import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
 import ServiceSchema from '../components/seo/ServiceSchema.astro';
+import HeroBackground from '../components/hero/HeroBackground.astro';
 import type { Service } from '../config/servicesContent';
 import type { SeoProps } from '../lib/seo';
 
 /**
  * For individual service detail pages (`src/pages/services/[slug].astro`,
  * and any future service-related page, e.g. a case study) — wraps
- * `BusinessLayout` with the `Service` JSON-LD and the Home > Services >
- * {service} breadcrumb trail, so that wiring only needs to happen once.
+ * `BusinessLayout` with the `Service` JSON-LD, so that wiring only needs
+ * to happen once.
  */
 export interface Props extends Omit<SeoProps, 'title' | 'description'> {
 	service: Service;
@@ -17,24 +17,33 @@ export interface Props extends Omit<SeoProps, 'title' | 'description'> {
 	title?: string;
 	/** SEO description override. Defaults to `service.description`. */
 	description?: string;
-	/** Label for the "Services" breadcrumb link. Defaults to `"Services"`. */
-	servicesLabel?: string;
 }
 
-const { service, title, description, servicesLabel = 'Services', ...seoProps } = Astro.props;
+const { service, title, description, ...seoProps } = Astro.props;
+const heroTitle = title ?? service.seoTitle ?? service.title;
+const heroDescription = description ?? service.seoDescription ?? service.description;
 ---
 
-<BusinessLayout title={title ?? service.title} description={description ?? service.description} {...seoProps}>
-	<slot name="header" slot="header" />
-	<slot name="footer" slot="footer" />
+<BusinessLayout
+	title={heroTitle}
+	description={heroDescription}
+	{...seoProps}
+>
 	<ServiceSchema
-		name={service.title}
-		description={service.description}
+		name={heroTitle}
+		description={heroDescription}
 		url={`/services/${service.slug}`}
 		image={service.image}
 	/>
-	<Breadcrumbs
-		items={[{ label: 'Home', href: '/' }, { label: servicesLabel, href: '/services' }, { label: service.title }]}
+	<HeroBackground
+		align="center"
+		image={service.image ?? service.homeImage}
+		title={heroTitle}
+		description={heroDescription}
+		primaryCtaText="Solicitar presupuesto"
+		primaryCtaHref="/contacto"
+		secondaryCtaText="Ver servicios"
+		secondaryCtaHref="/services"
 	/>
 	<slot />
 </BusinessLayout>

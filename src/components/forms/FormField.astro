@@ -1,7 +1,7 @@
 ---
-/** Reusable labeled input/textarea with a slot for validation errors. Used by `ContactForm`. */
+/** Reusable labeled input/textarea/select with a slot for validation errors. Used by `ContactForm`. */
 export interface Props {
-	type?: 'text' | 'email' | 'tel' | 'textarea';
+	type?: 'text' | 'email' | 'tel' | 'textarea' | 'select';
 	name: string;
 	label: string;
 	placeholder?: string;
@@ -10,13 +10,14 @@ export interface Props {
 	/** Enforced client-side as a UX hint only; the server re-checks the same limit authoritatively. */
 	maxLength?: number;
 	/**
-	 * Browser autofill hint (skipped for `type="textarea"`, where it isn't useful).
+	 * Browser autofill hint (skipped for `type="textarea"`/`select`, where it isn't useful).
 	 * Defaults based on `name` when not set explicitly: `name` → "name",
 	 * `email` → "email", `phone` → "tel", `company` → "organization".
 	 */
 	autocomplete?: string;
 	/** Visually hides the label (kept for screen readers) and relies on the placeholder instead. */
 	hideLabel?: boolean;
+	options?: { value: string; label: string }[];
 	class?: string;
 }
 
@@ -38,6 +39,7 @@ const {
 	maxLength,
 	autocomplete = AUTOCOMPLETE_BY_FIELD_NAME[name],
 	hideLabel = false,
+	options = [],
 	class: className,
 } = Astro.props;
 
@@ -60,6 +62,13 @@ const errorId = `${id}-error`;
 				maxlength={maxLength}
 				aria-describedby={errorId}
 			/>
+		) : type === 'select' ? (
+			<select id={id} name={name} required={required} aria-describedby={errorId}>
+				<option value="">{placeholder || '—'}</option>
+				{options.map((option) => (
+					<option value={option.value}>{option.label}</option>
+				))}
+			</select>
 		) : (
 			<input
 				id={id}
@@ -83,6 +92,13 @@ const errorId = `${id}-error`;
 		gap: 0.3rem;
 	}
 
+	.form-field__label {
+		font-size: 0.85rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+	}
+
 	.form-field__label--hidden {
 		position: absolute;
 		width: 1px;
@@ -96,9 +112,10 @@ const errorId = `${id}-error`;
 	}
 
 	.form-field input,
-	.form-field textarea {
+	.form-field textarea,
+	.form-field select {
 		font: inherit;
-		padding: 0.6rem;
+		padding: 0.75rem 0.85rem;
 		/* `--color-text-muted` (not the fainter `--color-border`) so the field's
 		   boundary itself meets the ~3:1 non-text contrast a required control
 		   needs (WCAG 1.4.11), not just the border-color swap on focus. */
@@ -108,26 +125,43 @@ const errorId = `${id}-error`;
 		color: inherit;
 	}
 
+	.form-field select {
+		appearance: none;
+		background-image: linear-gradient(45deg, transparent 50%, var(--color-text-muted) 50%),
+			linear-gradient(135deg, var(--color-text-muted) 50%, transparent 50%);
+		background-position:
+			calc(100% - 18px) 50%,
+			calc(100% - 12px) 50%;
+		background-size:
+			6px 6px,
+			6px 6px;
+		background-repeat: no-repeat;
+		padding-right: 2.2rem;
+	}
+
 	.form-field input:focus,
-	.form-field textarea:focus {
+	.form-field textarea:focus,
+	.form-field select:focus {
 		outline: none;
-		border-color: var(--color-primary);
+		border-color: var(--color-inverse);
 	}
 
 	/* Stronger ring specifically for keyboard focus, on top of the border-color change above. */
 	.form-field input:focus-visible,
-	.form-field textarea:focus-visible {
-		box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 30%, transparent);
+	.form-field textarea:focus-visible,
+	.form-field select:focus-visible {
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-inverse) 16%, transparent);
 	}
 
 	.form-field input[aria-invalid='true'],
-	.form-field textarea[aria-invalid='true'] {
+	.form-field textarea[aria-invalid='true'],
+	.form-field select[aria-invalid='true'] {
 		border-color: #dc2626;
 	}
 
 	.form-field__error {
 		margin: 0;
-		color: #dc2626;
+		color: #f87171;
 		font-size: 0.8rem;
 	}
 

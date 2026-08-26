@@ -1,0 +1,109 @@
+---
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+import { brands, brandsContent } from '../../config/brandsContent';
+import { imageFallbacks } from '../../config/images';
+import 'swiper/css';
+---
+
+<section class="brands-carousel" aria-label={brandsContent.heading}>
+	<div class="brands-swiper swiper" data-brands-swiper>
+		<div class="swiper-wrapper">
+			{brands.map((brand) => (
+				<div class="swiper-slide">
+					<ResponsiveImage
+						src={brand.image || imageFallbacks.photo}
+						alt={brand.name}
+						width={200}
+						height={80}
+					/>
+				</div>
+			))}
+		</div>
+	</div>
+</section>
+
+<script>
+	import Swiper from 'swiper';
+	import { Autoplay, FreeMode, A11y } from 'swiper/modules';
+
+	function initBrandsSwiper() {
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		document.querySelectorAll<HTMLElement>('[data-brands-swiper]').forEach((root) => {
+			const existing = (root as HTMLElement & { swiper?: Swiper }).swiper;
+			existing?.destroy(true, true);
+
+			new Swiper(root, {
+				modules: [Autoplay, FreeMode, A11y],
+				slidesPerView: 'auto',
+				spaceBetween: 56,
+				loop: true,
+				grabCursor: true,
+				allowTouchMove: true,
+				speed: reduceMotion ? 600 : 5000,
+				freeMode: {
+					enabled: true,
+					momentum: false,
+				},
+				autoplay: reduceMotion
+					? false
+					: {
+							delay: 0,
+							disableOnInteraction: false,
+							pauseOnMouseEnter: true,
+						},
+				a11y: {
+					enabled: true,
+				},
+			});
+		});
+	}
+
+	initBrandsSwiper();
+</script>
+
+<style>
+	.brands-carousel {
+		border-top: 1px solid var(--color-border);
+		background: var(--color-background);
+		padding-block: var(--spacing-lg);
+		overflow: hidden;
+		max-width: 100%;
+	}
+
+	.brands-swiper {
+		overflow: hidden;
+		mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+	}
+
+	.brands-swiper :global(.swiper-wrapper) {
+		align-items: center;
+		transition-timing-function: linear;
+	}
+
+	.brands-swiper :global(.swiper-slide) {
+		width: auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 3.5rem;
+	}
+
+	:global(.brands-swiper img) {
+		width: auto;
+		max-width: 9rem;
+		height: 2.4rem;
+		object-fit: contain;
+		pointer-events: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.brands-swiper {
+			mask-image: none;
+		}
+
+		.brands-swiper :global(.swiper-wrapper) {
+			transition-timing-function: ease;
+		}
+	}
+</style>

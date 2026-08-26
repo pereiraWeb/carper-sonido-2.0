@@ -9,10 +9,10 @@ export interface ConsentCheckboxContent {
 
 /** Editable copy for `src/components/forms/ConsentCheckbox.astro`. */
 export const consentCheckboxContent: ConsentCheckboxContent = {
-  label: 'Acepto la',
+  label: 'Acepto las condiciones de uso y la',
   policyText: 'política de privacidad',
   policyHref: legalRoutes.privacy,
-  errorText: 'Debes aceptar la política de privacidad para continuar.',
+  errorText: 'Debes aceptar las condiciones de uso y la política de privacidad para continuar.',
 };
 
 export interface FormStatusMessages {
@@ -39,7 +39,7 @@ export interface ContactFormText {
 
 /** Editable copy for `src/components/forms/ContactForm.astro`. */
 export const contactFormText: ContactFormText = {
-  submitText: 'Enviar mensaje',
+  submitText: 'Enviar',
   submittingText: 'Enviando…',
   honeypotLabel: 'Empresa',
   noscriptText: 'Este formulario necesita JavaScript para enviar tu mensaje. También puedes escribirnos directamente a',
@@ -56,6 +56,8 @@ export interface ContactValidationMessages {
   email: { required: string; max: (max: number) => string; invalid: string };
   phone: LengthValidationMessages & { invalid: string };
   message: LengthValidationMessages;
+  service: { required: string; invalid: string };
+  subject: { max: (max: number) => string };
 }
 
 /**
@@ -85,6 +87,13 @@ export const contactValidationMessages: ContactValidationMessages = {
     required: 'El mensaje es obligatorio.',
     min: (min) => `El mensaje debe tener al menos ${min} caracteres.`,
     max: (max) => `El mensaje debe tener como máximo ${max} caracteres.`,
+  },
+  service: {
+    required: 'Elige el servicio por el que nos contactas.',
+    invalid: 'Elige una opción válida.',
+  },
+  subject: {
+    max: (max) => `El asunto debe tener como máximo ${max} caracteres.`,
   },
 };
 

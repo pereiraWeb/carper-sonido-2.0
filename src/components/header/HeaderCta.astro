@@ -1,12 +1,11 @@
 ---
 import Container from '../ui/Container.astro';
 import Button from '../ui/Button.astro';
-import IconLinks, { type IconLinkItem } from '../ui/IconLinks.astro';
+import Icon from '../ui/Icon.astro';
 import BrandMark from '../ui/BrandMark.astro';
 import { business } from '../../config/business';
 import { mainNavigation } from '../../config/navigation';
 import { headerContent } from '../../config/headerContent';
-import { getHeaderIconLinks } from '../../lib/iconLinks';
 import { backgroundStyle, type BackgroundProps } from '../../lib/background';
 import NavMenu from './NavMenu.astro';
 
@@ -15,8 +14,6 @@ export interface Props extends BackgroundProps {
 	ctaHref?: string;
 	logo?: string;
 	logoAlt?: string;
-	/** Social/contact/WhatsApp icons shown next to the CTA button. Defaults to configured social links + WhatsApp. */
-	iconLinks?: IconLinkItem[];
 }
 
 const {
@@ -24,72 +21,126 @@ const {
 	ctaHref = headerContent.cta.ctaHref,
 	logo = business.logo,
 	logoAlt = business.name,
-	iconLinks = getHeaderIconLinks(),
 	backgroundColor,
 	backgroundImage,
 } = Astro.props;
 const style = backgroundStyle({ backgroundColor, backgroundImage });
+const phoneHref = `tel:${business.phone.replace(/[^\d+]/g, '')}`;
 ---
 
 <header class="header-cta" style={style}>
 	<Container class="header-cta__inner">
 		<a href="/" class="header-cta__brand">
-			<BrandMark logo={logo} logoAlt={logoAlt} class="header-cta__logo" />
+			<BrandMark logo={logo} logoAlt={logoAlt} variant="dark" class="header-cta__logo" />
 		</a>
 		<nav class="header-cta__nav" aria-label="Navegación principal">
-			<NavMenu items={mainNavigation} align="center" />
+			<NavMenu items={mainNavigation} align="center">
+				<li slot="panel-end" class="header-cta__panel-actions">
+					<Button href={phoneHref} size="sm" variant="inverse" class="header-cta__phone">
+						<Icon name="phone" size={16} />
+						{business.phone}
+					</Button>
+					<Button href={ctaHref} size="sm" variant="inverse-outline">{ctaText}</Button>
+				</li>
+			</NavMenu>
 		</nav>
 		<div class="header-cta__actions">
-			<IconLinks items={iconLinks} size={18} class="header-cta__icon-links" />
-			<Button href={ctaHref} size="sm">{ctaText}</Button>
+			<Button href={phoneHref} size="sm" variant="inverse" class="header-cta__phone">
+				<Icon name="phone" size={16} />
+				{business.phone}
+			</Button>
+			<Button href={ctaHref} size="sm" variant="inverse-outline">{ctaText}</Button>
 		</div>
 	</Container>
 </header>
 
 <style>
 	.header-cta {
-		position: relative;
+		position: sticky;
+		top: 0;
+		z-index: 80;
+		color: var(--color-on-media);
+		background-color: #121212;
+		/* Dark chrome: NavMenu, buttons and dropdowns inherit these tokens. */
+		--color-background: #121212;
+		--color-surface: #1a1a1a;
+		--color-text: #e0e0e0;
+		--color-text-muted: #b0b0b0;
+		--color-border: #444444;
 	}
 
 	:global(.header-cta__inner) {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 		gap: var(--spacing-md);
 		padding-block: var(--spacing-sm);
+		min-width: 0;
 	}
 
 	.header-cta__brand {
+		flex: 1 1 0;
+		min-width: 0;
+		display: flex;
+		justify-content: flex-start;
 		font-weight: bold;
 		font-size: 1.25rem;
 	}
 
 	/* :global() because the `<img>` is now rendered by the `BrandMark` child component, which is outside this component's scoped-CSS boundary. */
 	:global(.header-cta__logo) {
-		height: 2.25rem;
+		height: 3.4rem;
 		width: auto;
+		max-width: min(9.5rem, 42vw);
 	}
 
 	.header-cta__nav {
-		flex: 1;
+		flex: 0 1 auto;
 		display: flex;
 		justify-content: center;
+		min-width: 0;
 	}
 
 	.header-cta__actions {
+		flex: 1 1 0;
+		min-width: 0;
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-md);
-		flex-shrink: 0;
+		justify-content: flex-end;
+		gap: 0.45rem;
 	}
 
-	:global(.header-cta__icon-links) {
-		color: var(--color-text-muted);
+	.header-cta__panel-actions {
+		display: none;
 	}
 
-	@media (max-width: 640px) {
-		:global(.header-cta__icon-links) {
+	:global(.header-cta__phone) {
+		gap: 0.4rem;
+		padding-inline: 0.85rem;
+		letter-spacing: 0.02em;
+		color: var(--color-inverse);
+		white-space: nowrap;
+	}
+
+	:global(.header-cta__phone .icon) {
+		color: inherit;
+	}
+
+	@media (max-width: 980px) {
+		.header-cta__actions {
 			display: none;
+		}
+
+		.header-cta__panel-actions {
+			display: flex;
+			flex-direction: column;
+			gap: 0.65rem;
+			width: 100%;
+			padding: 0.85rem 0 0.35rem;
+			list-style: none;
+		}
+
+		.header-cta__panel-actions :global(.btn) {
+			width: 100%;
 		}
 	}
 </style>

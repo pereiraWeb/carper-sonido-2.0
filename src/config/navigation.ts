@@ -27,10 +27,19 @@ export const demoNavigation: NavItem[] = [
  * pages that aren't even built. See README section 16.
  */
 export const mainNavigation: NavItem[] = [
-  { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services' },
-  { label: 'About Us', href: '/about' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Inicio', href: '/' },
+  {
+    label: 'Servicios',
+    href: '/services',
+    children: [
+      { label: 'Videoconferencia, streaming y teletrabajo', href: '/services/teletrabajo' },
+      { label: 'Instalaciones', href: '/services/instalaciones' },
+      { label: 'Alquileres', href: '/services/alquiler' },
+      { label: 'Control de ruidos', href: '/services/control-de-ruidos' },
+      { label: 'Servicio técnico', href: '/services/servicio-tecnico' },
+    ],
+  },
+  { label: 'Contacto', href: '/contacto' },
   ...(includeDemos ? [{ label: 'Demos', href: '/demos', children: demoNavigation }] : []),
 ];
 
@@ -56,4 +65,12 @@ export const legalNavigation: NavItem[] = [
   { label: 'Política de privacidad', href: legalRoutes.privacy },
   { label: 'Política de cookies', href: legalRoutes.cookies },
   { label: 'Gestionar cookies', href: cookiePreferencesHref },
+];
+
+export const footerServiceLinks: NavItem[] = [
+  { label: 'Videoconferencia y streaming en Vigo y Pontevedra', href: '/services/teletrabajo' },
+  { label: 'Alquiler de sonido en Vigo y Pontevedra', href: '/services/alquiler' },
+  { label: 'Control de ruidos en Vigo y Pontevedra', href: '/services/control-de-ruidos' },
+  { label: 'Instalaciones de sonido en Vigo y Pontevedra', href: '/services/instalaciones' },
+  { label: 'Servicio técnico en Vigo y Pontevedra', href: '/services/servicio-tecnico' },
 ];

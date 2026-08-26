@@ -1,5 +1,6 @@
 ---
-import { business } from '../../config/business';
+import { business, geoCoordinates, serviceAreas } from '../../config/business';
+import { services } from '../../config/servicesContent';
 
 export interface Props {
 	/**
@@ -14,7 +15,7 @@ export interface Props {
 	priceRange?: string;
 }
 
-const { type = 'LocalBusiness', priceRange } = Astro.props;
+const { type = 'ProfessionalService', priceRange } = Astro.props;
 
 const DAY_ABBREVIATIONS: Record<string, string> = {
 	monday: 'Mo',
@@ -47,11 +48,6 @@ function toCompactTimeRange(hours: string): string | null {
 	return normalizedStart && normalizedEnd ? `${normalizedStart}-${normalizedEnd}` : null;
 }
 
-// Best-effort conversion of `business.hours` into schema.org's compact
-// `openingHours` string format (e.g. `"Mo-Fr 09:00-18:00"`). Entries that
-// don't parse cleanly are omitted entirely instead of emitting invalid data —
-// double-check the result in Google's Rich Results Test after editing
-// `business.hours`.
 const openingHours = business.hours
 	.map((entry) => {
 		const days = toCompactDayRange(entry.days);
@@ -60,15 +56,19 @@ const openingHours = business.hours
 	})
 	.filter((value): value is string => Boolean(value));
 
+const sameAs = Object.values(business.social).filter((url): url is string => Boolean(url));
+
 const jsonLd = {
 	'@context': 'https://schema.org',
 	'@type': type,
 	name: business.name,
+	legalName: business.legalName,
 	image: business.logo ? new URL(business.logo, business.siteUrl).toString() : undefined,
 	url: business.siteUrl,
 	telephone: business.phone,
 	email: business.email,
 	priceRange,
+	description: business.description,
 	address: {
 		'@type': 'PostalAddress',
 		streetAddress: business.address.street,
@@ -77,7 +77,35 @@ const jsonLd = {
 		postalCode: business.address.postalCode,
 		addressCountry: business.address.country,
 	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: geoCoordinates.latitude,
+		longitude: geoCoordinates.longitude,
+	},
+	areaServed: serviceAreas.map((area) => ({
+		'@type': area.type,
+		name: area.name,
+	})),
+	hasOfferCatalog: {
+		'@type': 'OfferCatalog',
+		name: 'Servicios de sonido profesional en Vigo y Pontevedra',
+		itemListElement: services.map((service, index) => ({
+			'@type': 'OfferCatalog',
+			name: service.seoTitle ?? service.title,
+			position: index + 1,
+			itemListElement: {
+				'@type': 'Offer',
+				itemOffered: {
+					'@type': 'Service',
+					name: service.seoTitle ?? service.title,
+					url: new URL(`/services/${service.slug}`, business.siteUrl).toString(),
+					areaServed: serviceAreas.map((area) => area.name),
+				},
+			},
+		})),
+	},
 	...(openingHours.length > 0 ? { openingHours } : {}),
+	...(sameAs.length > 0 ? { sameAs } : {}),
 };
 ---
 

@@ -52,15 +52,35 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 <style>
 	.services-showcase__header {
 		max-width: 640px;
+		margin-inline: auto;
 		margin-bottom: var(--spacing-lg);
+		text-align: center;
 	}
 
 	.services-showcase__list {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: var(--spacing-md);
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		align-items: stretch;
+	}
+
+	.services-showcase__list li {
+		display: flex;
+		min-width: 0;
+	}
+
+	@media (max-width: 960px) {
+		.services-showcase__list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 600px) {
+		.services-showcase__list {
+			grid-template-columns: minmax(0, 1fr);
+		}
 	}
 </style>

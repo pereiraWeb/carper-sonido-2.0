@@ -12,7 +12,16 @@ import { contactApiMessages, consentCheckboxContent } from '../../config/formCon
 export const prerender = false;
 
 /** Only these keys are accepted; anything else makes the payload "unexpected" and gets rejected outright. */
-const ALLOWED_KEYS = new Set(['name', 'email', 'phone', 'message', 'consent', HONEYPOT_FIELD_NAME]);
+const ALLOWED_KEYS = new Set([
+  'name',
+  'email',
+  'phone',
+  'message',
+  'service',
+  'subject',
+  'consent',
+  HONEYPOT_FIELD_NAME,
+]);
 
 /** Defensive upper bound on the raw request body, well above what a legitimate form ever needs. */
 const MAX_BODY_BYTES = 20_000;
@@ -122,6 +131,8 @@ export const POST: APIRoute = async (context) => {
     email: sanitizeText(String(raw.email ?? '')),
     phone: sanitizeText(String(raw.phone ?? '')),
     message: sanitizeText(String(raw.message ?? '')),
+    service: sanitizeText(String(raw.service ?? '')),
+    subject: sanitizeText(String(raw.subject ?? '')),
   };
 
   // 5. Authoritative validation. The client validates too, but only as a UX

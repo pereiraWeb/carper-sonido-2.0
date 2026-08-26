@@ -80,12 +80,16 @@ export async function sendContactEmail(data: ContactData): Promise<SendContactEm
       from,
       to,
       replyTo: data.email,
-      subject: `Nuevo mensaje de ${data.name} a través de la web de ${business.name}`,
-      text: `Nombre: ${data.name}\nEmail: ${data.email}\nTeléfono: ${data.phone}\n\nMensaje:\n${data.message}`,
+      subject: data.subject
+        ? `${data.subject} — ${data.name} (${data.service})`
+        : `Nuevo mensaje de ${data.name} a través de la web de ${business.name}`,
+      text: `Nombre: ${data.name}\nEmail: ${data.email}\nTeléfono: ${data.phone}\nServicio: ${data.service}\nAsunto: ${data.subject || '—'}\n\nMensaje:\n${data.message}`,
       html: `
         <p><strong>Nombre:</strong> ${escapeHtml(data.name)}</p>
         <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
         <p><strong>Teléfono:</strong> ${escapeHtml(data.phone)}</p>
+        <p><strong>Servicio:</strong> ${escapeHtml(data.service)}</p>
+        <p><strong>Asunto:</strong> ${escapeHtml(data.subject || '—')}</p>
         <p><strong>Mensaje:</strong></p>
         <p>${escapeHtml(data.message).replace(/\n/g, '<br />')}</p>
       `.trim(),

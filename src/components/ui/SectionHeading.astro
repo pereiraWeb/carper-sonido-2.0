@@ -48,6 +48,16 @@ const { as: Tag = 'h2', eyebrow, eyebrowClass, title, titleClass, description, d
 		text-transform: uppercase;
 	}
 
+	.section-heading__eyebrow::after {
+		content: '';
+		display: block;
+		width: 2.25rem;
+		height: 2px;
+		margin-top: 0.45rem;
+		margin-inline: auto;
+		background: var(--color-accent);
+	}
+
 	.section-heading__description {
 		color: var(--color-text-muted);
 	}

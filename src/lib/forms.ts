@@ -1,4 +1,5 @@
 import { contactValidationMessages } from '../config/formContent';
+import { contactServiceValues } from '../config/contactContent';
 
 /** Payload shape shared by the client script, `/api/contact` and `sendContactEmail`. */
 export interface ContactData {
@@ -6,6 +7,8 @@ export interface ContactData {
   email: string;
   phone: string;
   message: string;
+  service: string;
+  subject: string;
 }
 
 /**
@@ -20,6 +23,8 @@ export interface ContactErrors {
   phone?: string;
   company?: string;
   message?: string;
+  service?: string;
+  subject?: string;
   consent?: string;
 }
 
@@ -45,6 +50,8 @@ export const contactFieldLimits = {
   email: { max: 200 },
   phone: { min: 6, max: 20 },
   message: { min: 10, max: 5000 },
+  service: { max: 80 },
+  subject: { max: 200 },
 } as const;
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -97,6 +104,18 @@ export function validateContactForm(data: ContactData): FormValidationResult {
     errors.phone = messages.phone.max(contactFieldLimits.phone.max);
   } else if (!phonePattern.test(phone) || phoneDigitCount < 6) {
     errors.phone = messages.phone.invalid;
+  }
+
+  const service = sanitizeText(data.service);
+  if (!service) {
+    errors.service = messages.service.required;
+  } else if (!(contactServiceValues as readonly string[]).includes(service)) {
+    errors.service = messages.service.invalid;
+  }
+
+  const subject = sanitizeText(data.subject);
+  if (subject.length > contactFieldLimits.subject.max) {
+    errors.subject = messages.subject.max(contactFieldLimits.subject.max);
   }
 
   const message = sanitizeText(data.message);

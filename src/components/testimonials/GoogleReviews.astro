@@ -1,0 +1,229 @@
+---
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import CardGoogleReview from '../cards/CardGoogleReview.astro';
+import { googleReviews, googleReviewsContent } from '../../config/googleReviews';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+const { eyebrow, title, description, ctaText, mapsUrl } = googleReviewsContent;
+---
+
+<section class="google-reviews" aria-label={title}>
+	<Container>
+		<div class="google-reviews__header">
+			<SectionHeading
+				eyebrow={eyebrow}
+				title={title}
+				titleClass="google-reviews__title"
+				description={description}
+			/>
+			<p class="google-reviews__source">
+				<span class="google-reviews__google" aria-hidden="true">
+					<svg viewBox="0 0 24 24" width="18" height="18">
+						<path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.53 5.53 0 0 1-2.4 3.63v3.02h3.89c2.27-2.09 3.53-5.17 3.53-8.89Z"></path>
+						<path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.89-3.02c-1.08.72-2.45 1.15-4.06 1.15-3.12 0-5.76-2.11-6.7-4.94H1.28v3.11A11.996 11.996 0 0 0 12 24Z"></path>
+						<path fill="#FBBC05" d="M5.3 14.28A7.21 7.21 0 0 1 4.92 12c0-.79.14-1.56.38-2.28V6.61H1.28A12 12 0 0 0 0 12c0 1.94.46 3.77 1.28 5.39l4.02-3.11Z"></path>
+						<path fill="#EA4335" d="M12 4.75c1.76 0 3.35.61 4.6 1.8l3.45-3.45C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.28 6.61l4.02 3.11C6.24 6.86 8.88 4.75 12 4.75Z"></path>
+					</svg>
+				</span>
+				Reseñas verificadas del perfil oficial de Google
+			</p>
+		</div>
+
+		<div class="reviews-swiper swiper" data-reviews-swiper>
+			<div class="swiper-wrapper">
+				{googleReviews.map((review) => (
+					<div class="swiper-slide">
+						<CardGoogleReview
+							quote={review.quote}
+							author={review.author}
+							initials={review.initials}
+							rating={review.rating}
+							createdAt={review.createdAt}
+							createdAtIso={review.createdAtIso}
+							verified={review.verified}
+						/>
+					</div>
+				))}
+			</div>
+			<div class="reviews-swiper__controls">
+				<button class="reviews-swiper__nav reviews-swiper__prev" type="button" aria-label="Reseñas anteriores">
+					<Icon name="chevron-right" size={18} />
+				</button>
+				<div class="reviews-swiper__pagination"></div>
+				<button class="reviews-swiper__nav reviews-swiper__next" type="button" aria-label="Reseñas siguientes">
+					<Icon name="chevron-right" size={18} />
+				</button>
+			</div>
+		</div>
+
+		<div class="google-reviews__cta">
+			<Button href={mapsUrl} variant="outline" target="_blank" rel="noopener noreferrer">
+				{ctaText}
+			</Button>
+		</div>
+	</Container>
+</section>
+
+<script>
+	import Swiper from 'swiper';
+	import { Navigation, Pagination, A11y } from 'swiper/modules';
+
+	function initReviewsSwiper() {
+		document.querySelectorAll<HTMLElement>('[data-reviews-swiper]').forEach((root) => {
+			const existing = (root as HTMLElement & { swiper?: Swiper }).swiper;
+			existing?.destroy(true, true);
+
+			new Swiper(root, {
+				modules: [Navigation, Pagination, A11y],
+				slidesPerView: 1,
+				slidesPerGroup: 1,
+				spaceBetween: 16,
+				grabCursor: true,
+				speed: 500,
+				rewind: true,
+				watchOverflow: true,
+				breakpoints: {
+					640: {
+						slidesPerView: 2,
+						slidesPerGroup: 2,
+						spaceBetween: 20,
+					},
+					961: {
+						slidesPerView: 3,
+						slidesPerGroup: 3,
+						spaceBetween: 24,
+					},
+				},
+				pagination: {
+					el: root.querySelector<HTMLElement>('.reviews-swiper__pagination'),
+					clickable: true,
+				},
+				navigation: {
+					nextEl: root.querySelector<HTMLElement>('.reviews-swiper__next'),
+					prevEl: root.querySelector<HTMLElement>('.reviews-swiper__prev'),
+				},
+				a11y: {
+					prevSlideMessage: 'Reseñas anteriores',
+					nextSlideMessage: 'Reseñas siguientes',
+				},
+			});
+		});
+	}
+
+	initReviewsSwiper();
+</script>
+
+<style>
+	.google-reviews {
+		padding-block: var(--spacing-xl);
+		border-top: 1px solid var(--color-border);
+		background: var(--color-surface);
+	}
+
+	.google-reviews__header {
+		max-width: 640px;
+		margin-inline: auto;
+		margin-bottom: var(--spacing-lg);
+		text-align: center;
+	}
+
+	:global(.google-reviews__title) {
+		margin: 0 0 0.5rem;
+	}
+
+	.google-reviews__source {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		margin: 0.85rem 0 0;
+		color: var(--color-text-muted);
+		font-size: 0.9rem;
+	}
+
+	.google-reviews__google {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+	}
+
+	.reviews-swiper {
+		overflow: hidden;
+		padding-bottom: 0.25rem;
+	}
+
+	.reviews-swiper :global(.swiper-wrapper) {
+		align-items: stretch;
+	}
+
+	.reviews-swiper :global(.swiper-slide) {
+		height: auto;
+		display: flex;
+		box-sizing: border-box;
+	}
+
+	.reviews-swiper :global(.card-google-review) {
+		width: 100%;
+	}
+
+	.reviews-swiper__controls {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.85rem;
+		margin-top: var(--spacing-md);
+	}
+
+	.reviews-swiper__nav {
+		display: grid;
+		place-items: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		padding: 0;
+		border: 1px solid var(--color-border);
+		border-radius: 50%;
+		background: var(--color-background);
+		color: var(--color-text);
+		cursor: pointer;
+		transition: color 0.2s ease, border-color 0.2s ease;
+	}
+
+	.reviews-swiper__prev :global(.icon) {
+		transform: rotate(180deg);
+	}
+
+	.reviews-swiper__nav:hover {
+		color: var(--color-text);
+		border-color: var(--color-text-muted);
+	}
+
+	.reviews-swiper__pagination {
+		display: flex;
+		justify-content: center;
+		gap: 0.4rem;
+	}
+
+	.reviews-swiper__pagination :global(.swiper-pagination-bullet) {
+		width: 0.5rem;
+		height: 0.5rem;
+		margin: 0;
+		background: var(--color-primary);
+		opacity: 0.35;
+	}
+
+	.reviews-swiper__pagination :global(.swiper-pagination-bullet-active) {
+		background: var(--color-inverse);
+		opacity: 1;
+	}
+
+	.google-reviews__cta {
+		display: flex;
+		justify-content: center;
+		margin-top: var(--spacing-lg);
+	}
+</style>

@@ -58,7 +58,7 @@ const errorId = `${id}-error`;
 	.consent-checkbox input {
 		flex-shrink: 0;
 		margin-top: 0.2rem;
-		accent-color: var(--color-primary);
+		accent-color: var(--color-inverse);
 	}
 
 	.consent-checkbox label {
@@ -66,8 +66,13 @@ const errorId = `${id}-error`;
 	}
 
 	.consent-checkbox a {
-		color: var(--color-primary);
+		color: inherit;
 		font-weight: 600;
+	}
+
+	.consent-checkbox a:hover {
+		color: var(--color-text);
+		text-decoration: underline;
 	}
 
 	.consent-checkbox__error {

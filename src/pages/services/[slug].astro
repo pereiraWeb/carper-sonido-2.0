@@ -1,12 +1,15 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
 import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
 import Button from '../../components/ui/Button.astro';
 import Icon from '../../components/ui/Icon.astro';
 import ResponsiveImage from '../../components/media/ResponsiveImage.astro';
+import ContactSplit from '../../components/contact/ContactSplit.astro';
 import { CtaBoxed } from '../../components/cta';
 import { services, servicesContent, type Service } from '../../config/servicesContent';
 import { imageFallbacks } from '../../config/images';
+import { satEmail } from '../../config/business';
 
 export function getStaticPaths() {
 	return services.map((service) => ({
@@ -20,17 +23,17 @@ interface Props {
 }
 
 const { service } = Astro.props;
+const paragraphs = (service.content ?? '').split('\n\n').filter(Boolean);
 ---
 <ServiceLayout service={service}>
 	<Section>
 		<div class="single-service">
 			<div class="single-service__media">
-				<ResponsiveImage src={service.image ?? imageFallbacks.photo} alt={service.title} width={800} height={600} priority />
+				<ResponsiveImage src={service.image ?? imageFallbacks.photo} alt={service.title} width={800} height={600} />
 			</div>
 			<div class="single-service__content">
-				<h1 class="single-service__title">{service.title}</h1>
-				<p class="single-service__lead">{service.description}</p>
-				{service.content && <p class="single-service__body">{service.content}</p>}
+				<p class="single-service__eyebrow">Servicio en Vigo y Pontevedra</p>
+				{paragraphs.map((paragraph) => <p class="single-service__body">{paragraph}</p>)}
 				{service.features && service.features.length > 0 && (
 					<ul class="single-service__features">
 						{service.features.map((feature) => (
@@ -51,38 +54,155 @@ const { service } = Astro.props;
 			</div>
 		</div>
 	</Section>
-	<CtaBoxed />
+
+	{service.blocks && service.blocksLayout === 'cards' ? (
+		<section class="service-cards">
+			<Container>
+				{service.blocksTitle && <h2 class="service-cards__title">{service.blocksTitle}</h2>}
+				<ul class="service-cards__grid">
+					{service.blocks.map((block) => {
+						const blockParagraphs = block.content.split('\n\n').filter(Boolean);
+						return (
+							<li>
+								<article class="service-card">
+									<div class="service-card__media">
+										<ResponsiveImage src={block.image ?? imageFallbacks.photo} alt={block.title} width={640} height={400} />
+									</div>
+									<div class="service-card__body">
+										{block.extra && <p class="service-card__extra">{block.extra}</p>}
+										<h3 class="service-card__heading">{block.title}</h3>
+										{blockParagraphs.map((paragraph) => <p class="service-card__copy">{paragraph}</p>)}
+										{block.features && block.features.length > 0 && (
+											<ul class="service-card__features">
+												{block.features.map((feature) => (
+													<li>{feature}</li>
+												))}
+											</ul>
+										)}
+										{block.href && (
+											<Button href={block.href} variant="outline" class="service-card__cta">
+												{block.hrefText ?? 'Más información'}
+											</Button>
+										)}
+									</div>
+								</article>
+							</li>
+						);
+					})}
+				</ul>
+			</Container>
+		</section>
+	) : service.blocks?.map((block, index) => {
+		const blockParagraphs = block.content.split('\n\n').filter(Boolean);
+		return (
+			<section class:list={['service-block', { 'service-block--alt': index % 2 === 1 }]}>
+				<Container class="service-block__inner">
+					<div class:list={['service-block__media', { 'service-block__media--photo': service.slug === 'servicio-tecnico' }]}>
+						<ResponsiveImage src={block.image ?? imageFallbacks.photo} alt={block.title} width={800} height={600} />
+					</div>
+					<div class="service-block__copy">
+						{block.extra && <p class="service-block__extra">{block.extra}</p>}
+						<h2>{block.title}</h2>
+						{blockParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+						{block.features && block.features.length > 0 && (
+							<ul class="service-block__features">
+								{block.features.map((feature) => (
+									<li>{feature}</li>
+								))}
+							</ul>
+						)}
+						{block.href && block.hrefText && (
+							<Button href={block.href} variant="outline">{block.hrefText}</Button>
+						)}
+					</div>
+				</Container>
+			</section>
+		);
+	})}
+
+	{service.workshopNote && (
+		<Section>
+			<div class="workshop">
+				<h2>Nuestro taller está en:</h2>
+				<p>
+					<strong>CARPER SONIDO PROFESIONAL</strong><br />
+					C/Pi y Margal 43 bajo, 36202, Vigo, Pontevedra.<br />
+					Tel: <a href="tel:+34986177621">+34 986 17 76 21</a><br />
+					Mail: <a href={`mailto:${satEmail}`}>{satEmail}</a>
+				</p>
+			</div>
+		</Section>
+	)}
+
+	{service.ctaBanner && (
+		<CtaBoxed
+			eyebrow={service.ctaBanner.eyebrow}
+			title={service.ctaBanner.title}
+			description={service.ctaBanner.description}
+			ctaText={service.ctaBanner.ctaText}
+			ctaHref={service.ctaBanner.ctaHref}
+			secondaryCtaText=""
+			image={service.image}
+		/>
+	)}
+
+	{service.showForm ? <ContactSplit /> : !service.ctaBanner && <CtaBoxed image={service.image} />}
 </ServiceLayout>
 
 
 <style>
 	.single-service {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 		gap: var(--spacing-xl);
 		align-items: center;
 	}
 
-	/* :global() because the `<img>` is now rendered by the `ResponsiveImage` child component, which is outside this component's scoped-CSS boundary. */
-	:global(.single-service__media img) {
-		width: 100%;
+	.single-service__media {
+		position: relative;
+		min-width: 0;
+		overflow: hidden;
+		border: 1px solid var(--color-border);
+		border-radius: calc(var(--radius-base) * 2);
+		background: var(--color-surface);
 		aspect-ratio: 4 / 3;
-		border-radius: calc(var(--radius-base) * 1.5);
+	}
+
+	:global(.single-service__media img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
 		object-fit: cover;
 	}
 
-	.single-service__title {
-		font-size: clamp(2rem, 4vw, 2.75rem);
-		line-height: 1.2;
+	.single-service__content {
+		min-width: 0;
 	}
 
-	.single-service__lead {
-		font-size: 1.15rem;
-		color: var(--color-text-muted);
+	.single-service__eyebrow {
+		display: inline-block;
+		margin: 0 0 0.5rem;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-primary);
+	}
+
+	.single-service__eyebrow::after {
+		content: '';
+		display: block;
+		width: 2.25rem;
+		height: 2px;
+		margin-top: 0.45rem;
+		background: var(--color-accent);
 	}
 
 	.single-service__body {
 		color: var(--color-text-muted);
+		white-space: pre-line;
+		overflow-wrap: break-word;
 	}
 
 	.single-service__features {
@@ -115,13 +235,214 @@ const { service } = Astro.props;
 		transform: rotate(180deg);
 	}
 
+	.service-block {
+		padding-block: var(--spacing-lg);
+		border-top: 1px solid var(--color-border);
+		background: var(--color-background);
+	}
+
+	:global(.service-block__inner) {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: var(--spacing-lg);
+		align-items: center;
+	}
+
+	.service-block--alt .service-block__media {
+		order: 2;
+	}
+
+	.service-block__media {
+		position: relative;
+		min-width: 0;
+		overflow: hidden;
+		border: 1px solid var(--color-border);
+		border-radius: calc(var(--radius-base) * 2);
+		background: var(--color-surface);
+		aspect-ratio: 4 / 3;
+	}
+
+	:global(.service-block__media img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		padding: 1.5rem;
+	}
+
+	:global(.service-block__media--photo img) {
+		object-fit: cover;
+		padding: 0;
+	}
+
+	.service-block__copy {
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.service-block__copy h2 {
+		overflow-wrap: break-word;
+	}
+
+	.service-block__extra {
+		margin: 0;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--color-primary);
+	}
+
+	.service-block__copy p {
+		color: var(--color-text-muted);
+		white-space: pre-line;
+		overflow-wrap: break-word;
+	}
+
+	.service-block__features {
+		margin: 0.5rem 0 1rem;
+		padding-left: 1.1rem;
+		color: var(--color-text-muted);
+	}
+
+	.workshop {
+		max-width: 36rem;
+		padding: var(--spacing-lg);
+		border: 1px solid var(--color-border);
+		background: var(--color-surface);
+	}
+
+	.workshop p {
+		margin: 0;
+		color: var(--color-text-muted);
+		line-height: 1.7;
+	}
+
+	.service-cards {
+		padding-block: var(--spacing-xl);
+		border-top: 1px solid var(--color-border);
+	}
+
+	.service-cards__title {
+		margin: 0 0 var(--spacing-lg);
+		font-size: clamp(1.5rem, 3vw, 2.1rem);
+		text-align: center;
+	}
+
+	.service-cards__grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--spacing-md);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		align-items: stretch;
+	}
+
+	.service-cards__grid > li {
+		display: flex;
+		min-width: 0;
+	}
+
+	.service-card {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		min-width: 0;
+		overflow: hidden;
+		border: 1px solid var(--color-border);
+		border-radius: calc(var(--radius-base) * 2);
+		background: var(--color-background);
+	}
+
+	.service-card__media {
+		position: relative;
+		flex: 0 0 auto;
+		aspect-ratio: 16 / 10;
+		background: #111;
+	}
+
+	:global(.service-card__media img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		padding: 1.25rem;
+	}
+
+	.service-card__body {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		gap: 0.65rem;
+		padding: var(--spacing-md);
+	}
+
+	.service-card__extra {
+		margin: 0;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--color-primary);
+	}
+
+	.service-card__heading {
+		margin: 0;
+		font-size: 1.2rem;
+		line-height: 1.25;
+		overflow-wrap: break-word;
+	}
+
+	.service-card__copy {
+		margin: 0;
+		color: var(--color-text-muted);
+		font-size: 0.95rem;
+		overflow-wrap: break-word;
+	}
+
+	.service-card__features {
+		margin: 0;
+		padding-left: 1.1rem;
+		color: var(--color-text-muted);
+		font-size: 0.9rem;
+	}
+
+	.service-card__features li + li {
+		margin-top: 0.35rem;
+	}
+
+	:global(.service-card .btn.service-card__cta) {
+		margin-top: auto;
+		align-self: flex-start;
+		max-width: 100%;
+		white-space: normal;
+		text-wrap: pretty;
+	}
+
 	@media (max-width: 768px) {
-		.single-service {
+		.single-service,
+		:global(.service-block__inner) {
 			grid-template-columns: 1fr;
 		}
 
-		.single-service__media {
+		.single-service__media,
+		.service-block--alt .service-block__media {
 			order: -1;
+		}
+
+		.single-service__media,
+		.service-block__media {
+			aspect-ratio: 16 / 10;
+		}
+
+		.service-cards__grid {
+			grid-template-columns: minmax(0, 1fr);
 		}
 	}
 </style>

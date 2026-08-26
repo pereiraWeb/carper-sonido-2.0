@@ -30,7 +30,7 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 
 <section class="contact-split" style={style}>
 	<Container class="contact-split__grid">
-		<ContactForm class="contact-split__form" submitText={submitText} placeholderLabels />
+		<ContactForm class="contact-split__form" submitText={submitText} inlineNameEmail />
 		<div class="contact-split__info">
 			<CardContact title={title} />
 			{showMap && <MapEmbed class="contact-split__map" />}
@@ -45,7 +45,7 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 	   rest so the card + map column matches the form's total height. */
 	:global(.contact-split__grid) {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 		gap: var(--spacing-xl);
 	}
 
@@ -61,7 +61,8 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 	   `FormField.astro`'s own scoped border rule, which can otherwise tie or
 	   win on specificity depending on how Astro's per-page CSS gets chunked. */
 	:global(.contact-split__form .form-field input),
-	:global(.contact-split__form .form-field textarea) {
+	:global(.contact-split__form .form-field textarea),
+	:global(.contact-split__form .form-field select) {
 		padding: 0.65rem 0 !important;
 		border: none !important;
 		border-bottom: 1px solid var(--color-text-muted) !important;
@@ -71,15 +72,17 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 	}
 
 	:global(.contact-split__form .form-field input:focus),
-	:global(.contact-split__form .form-field textarea:focus) {
+	:global(.contact-split__form .form-field textarea:focus),
+	:global(.contact-split__form .form-field select:focus) {
 		outline: none !important;
-		border-color: var(--color-primary) !important;
+		border-color: var(--color-inverse) !important;
 	}
 
 	/* Stronger cue for keyboard focus specifically, since these underline-only inputs have no box to ring. */
 	:global(.contact-split__form .form-field input:focus-visible),
-	:global(.contact-split__form .form-field textarea:focus-visible) {
-		background-color: color-mix(in srgb, var(--color-primary) 6%, transparent) !important;
+	:global(.contact-split__form .form-field textarea:focus-visible),
+	:global(.contact-split__form .form-field select:focus-visible) {
+		background-color: color-mix(in srgb, var(--color-inverse) 4%, transparent) !important;
 	}
 
 	:global(.contact-split__map) {

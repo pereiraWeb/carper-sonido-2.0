@@ -15,9 +15,9 @@ export interface AgencyCreditContent {
  * `linkPrefix + linkMiddle + linkSuffix` (e.g. ">pereiraweb.es_").
  */
 export const agencyCreditContent: AgencyCreditContent = {
-  text: 'Página creada con el plan WEB 360 de',
+  text: 'Página creada por',
   linkPrefix: '>',
-  linkMiddle: 'pereiraweb',
+  linkMiddle: '36Web',
   linkSuffix: '.es_',
-  href: 'https://pereiraweb.es/web-profesional-360',
+  href: 'https://36web.es/diseño-web/',
 };

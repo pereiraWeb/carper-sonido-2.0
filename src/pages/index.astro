@@ -1,30 +1,75 @@
 ---
 import BusinessLayout from '../layouts/BusinessLayout.astro';
 import HeroBackground from '../components/hero/HeroBackground.astro';
-import { TextImage } from '../components/media';
-import { ServicesGrid } from '../components/services';
-import { TestimonialsGrid } from '../components/testimonials';
+import { ServicesShowcase } from '../components/services';
+import { GoogleReviews } from '../components/testimonials';
+import BrandsCarousel from '../components/brands/BrandsCarousel.astro';
 import { CtaCentered } from '../components/cta';
-import LocalBusinessSchema from '../components/seo/LocalBusinessSchema.astro';
 import { business } from '../config/business';
+import { footerContent } from '../config/footerContent';
 ---
 
-<BusinessLayout title="Home" description="Welcome to our business website.">
-	<!--
-		Only meaningful for businesses with a real physical location customers
-		visit — if this is a purely online business/service, delete this line
-		(the site-wide `OrganizationSchema` in `BusinessLayout.astro` already
-		covers general SEO identity for every business type). See
-		`src/components/seo/LocalBusinessSchema.astro` for the `type` prop to
-		use a more specific schema.org subtype (e.g. "Restaurant", "Dentist").
-	-->
-	<LocalBusinessSchema />
-	<HeroBackground align="center"
-	height="360px"
-	title={business.name}
-	description={business.description} />
-	<TextImage  />
-	<ServicesGrid />
-	<TestimonialsGrid />
+<BusinessLayout
+	title="Sonido profesional en Vigo y Pontevedra"
+	description={business.description}
+>
+	<HeroBackground
+		align="center"
+		image="/img/2018/10/mitchell-leach-593902-unsplash.jpg"
+		title="Sonido profesional en Vigo y Pontevedra"
+		description="Alquiler de sonido e iluminación, instalaciones, control de ruidos y servicio técnico. Más de 30 años llevando el mejor sonido a Vigo y Pontevedra."
+		primaryCtaText="Solicitar presupuesto"
+		primaryCtaHref="/contacto"
+		secondaryCtaText="Ver servicios"
+		secondaryCtaHref="/services"
+	/>
+	<section class="mission">
+		<p class="mission__eyebrow">Nuestra meta</p>
+		<p class="mission__text">{footerContent.columns.mission}</p>
+	</section>
+	<ServicesShowcase
+		title="Sonido profesional en Vigo y Pontevedra"
+		description="Alquiler, instalaciones, control de ruidos, servicio técnico y equipos para videoconferencia."
+	/>
+	<GoogleReviews />
+	<BrandsCarousel />
 	<CtaCentered />
 </BusinessLayout>
+
+<style>
+	.mission {
+		display: grid;
+		place-items: center;
+		padding-block: var(--spacing-xl);
+		border-top: 1px solid var(--color-border);
+		text-align: center;
+	}
+
+	.mission__eyebrow {
+		display: inline-block;
+		margin: 0 0 0.75rem;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-primary);
+	}
+
+	.mission__eyebrow::after {
+		content: '';
+		display: block;
+		width: 2.25rem;
+		height: 2px;
+		margin-top: 0.45rem;
+		margin-inline: auto;
+		background: var(--color-accent);
+	}
+
+	.mission__text {
+		margin: 0;
+		max-width: 42rem;
+		font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+		line-height: 1.45;
+		color: var(--color-text);
+	}
+</style>

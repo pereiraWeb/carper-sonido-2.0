@@ -9,6 +9,8 @@ export interface CtaContentConfig {
     secondaryCtaHref?: string;
     /** Any valid CSS length (e.g. "auto", "320px", "50vh"). */
     height: string;
+    /** Full-bleed photo behind the overlay. */
+    image: string;
   };
   split: {
     eyebrow?: string;
@@ -18,6 +20,7 @@ export interface CtaContentConfig {
     ctaHref: string;
     /** Any valid CSS length (e.g. "auto", "320px", "50vh"). */
     height: string;
+    image: string;
   };
   boxed: {
     eyebrow?: string;
@@ -29,37 +32,41 @@ export interface CtaContentConfig {
     secondaryCtaHref?: string;
     /** Any valid CSS length (e.g. "auto", "320px", "50vh"). */
     height: string;
+    image: string;
   };
 }
 
 /** Editable copy for every component in `src/components/cta/`. */
 export const ctaContent: CtaContentConfig = {
   centered: {
-    eyebrow: 'Get started',
-    title: 'Ready to grow your business?',
-    description: "Let's talk about how we can help you reach your goals.",
-    ctaText: 'Get in touch',
-    ctaHref: '/contact',
-    secondaryCtaText: 'View services',
+    eyebrow: 'Presupuesto',
+    title: 'Solicitar presupuesto',
+    description: 'Cuéntanos tu evento, local o reparación en Vigo o Pontevedra y te proponemos la mejor opción.',
+    ctaText: 'Contactar',
+    ctaHref: '/contacto',
+    secondaryCtaText: 'Ver servicios',
     secondaryCtaHref: '/services',
     height: 'auto',
+    image: '/img/2018/11/IMG_5795.jpg',
   },
   split: {
-    eyebrow: 'Have a project in mind?',
-    title: "Let's build something great together",
-    description: 'Tell us about your project and we will get back to you within one business day.',
-    ctaText: 'Contact us',
-    ctaHref: '/contact',
+    eyebrow: '¿Tienes un proyecto?',
+    title: 'Pide presupuesto sin compromiso',
+    description: 'Te respondemos lo antes posible.',
+    ctaText: 'Contactar',
+    ctaHref: '/contacto',
     height: 'auto',
+    image: '/img/2018/11/publicgrande2.jpg',
   },
   boxed: {
-    eyebrow: "Let's work together",
-    title: 'Start your project today',
-    description: 'Reach out and get a free, no-obligation consultation with our team.',
-    ctaText: 'Request a quote',
-    ctaHref: '/contact',
-    secondaryCtaText: 'Learn more',
-    secondaryCtaHref: '/about',
+    eyebrow: 'Carper Sonido',
+    title: 'Solicitar presupuesto',
+    description: 'Alquiler, instalaciones, control de ruidos y servicio técnico en Vigo y Pontevedra.',
+    ctaText: 'Solicitar presupuesto',
+    ctaHref: '/contacto',
+    secondaryCtaText: 'Ver servicios',
+    secondaryCtaHref: '/services',
     height: 'auto',
+    image: '/img/2018/11/moon1grande.jpg',
   },
 };

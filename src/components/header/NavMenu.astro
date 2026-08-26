@@ -74,6 +74,7 @@ function isActive(href: string): boolean {
 				);
 			})
 		}
+		<slot name="panel-end" />
 	</ul>
 </div>
 
@@ -173,10 +174,20 @@ function isActive(href: string): boolean {
 	.nav-menu {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--spacing-md);
+		align-items: center;
+		gap: 1.75rem;
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		font-family: var(--font-base);
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.nav-menu__item-row > a {
+		font-size: 0.95rem;
+		transition: color 0.2s ease;
 	}
 
 	.nav-menu--center {
@@ -194,6 +205,14 @@ function isActive(href: string): boolean {
 	.nav-menu__item-row {
 		display: flex;
 		align-items: center;
+	}
+
+	.nav-menu__item-row > a {
+		padding-bottom: 0.12em;
+	}
+
+	.nav-menu__item-row > a:hover {
+		color: var(--color-accent);
 	}
 
 	.nav-menu__item-row > a[aria-current='page'] {
@@ -241,7 +260,7 @@ function isActive(href: string): boolean {
 		z-index: 30;
 		display: none;
 		flex-direction: column;
-		min-width: 210px;
+		min-width: 16rem;
 		margin: 0;
 		padding: 0.6rem 0.4rem 0.4rem;
 		list-style: none;
@@ -258,21 +277,27 @@ function isActive(href: string): boolean {
 
 	.nav-menu__dropdown li a {
 		display: block;
-		padding: 0.5rem 0.65rem;
+		padding: 0.55rem 0.75rem;
 		border-radius: var(--radius-base);
 		color: var(--color-text);
-		white-space: nowrap;
+		font-family: var(--font-base);
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		white-space: normal;
+		transition: color 0.2s ease;
 	}
 
 	.nav-menu__dropdown li a:hover {
-		background-color: var(--color-surface);
+		color: var(--color-accent);
 	}
 
 	/* Mobile: hamburger toggle + full-width slide-down panel. Requires the
 	   nearest positioned ancestor to be the <header> itself (see each Header
 	   component's `position: relative`), so the panel can span the full
 	   header width instead of just this component's own narrow box. */
-	@media (max-width: 860px) {
+	@media (max-width: 980px) {
 		.nav-menu__toggle {
 			display: inline-flex;
 		}
@@ -309,7 +334,8 @@ function isActive(href: string): boolean {
 		.nav-menu__item-row > a {
 			flex: 1;
 			display: block;
-			padding: 0.65rem 0;
+			padding: 0.8rem 0;
+			font-size: 1.05rem;
 		}
 
 		.nav-menu__item--has-children > .nav-menu__item-row > a::after {

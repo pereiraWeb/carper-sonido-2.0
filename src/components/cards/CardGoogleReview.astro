@@ -1,0 +1,140 @@
+---
+import Icon from '../ui/Icon.astro';
+import { googleReviewsContent } from '../../config/googleReviews';
+
+export interface Props {
+	quote: string;
+	author: string;
+	initials: string;
+	rating: number;
+	createdAt: string;
+	createdAtIso: string;
+	verified?: boolean;
+}
+
+const {
+	quote,
+	author,
+	initials,
+	rating,
+	createdAt,
+	createdAtIso,
+	verified = true,
+} = Astro.props;
+---
+
+<article class="card-google-review">
+	<div class="card-google-review__top">
+		<div class="card-google-review__rating" aria-label={`${rating} de 5 estrellas`}>
+			{Array.from({ length: 5 }).map((_, index) => (
+				<Icon name={index < rating ? 'star' : 'star-outline'} size={15} />
+			))}
+		</div>
+		{verified && (
+			<p class="card-google-review__verified">
+				<Icon name="check" size={12} />
+				{googleReviewsContent.verifiedLabel}
+			</p>
+		)}
+	</div>
+	<p class="card-google-review__quote">&ldquo;{quote}&rdquo;</p>
+	<div class="card-google-review__author">
+		<span class="card-google-review__avatar" aria-hidden="true">{initials}</span>
+		<div>
+			<p class="card-google-review__name">{author}</p>
+			<p class="card-google-review__meta">
+				<time datetime={createdAtIso}>{createdAt}</time>
+			</p>
+		</div>
+	</div>
+</article>
+
+<style>
+	.card-google-review {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: var(--spacing-md);
+		border: 1px solid var(--color-border);
+		border-radius: calc(var(--radius-base) * 2);
+		background-color: var(--color-background);
+	}
+
+	.card-google-review__top {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem 0.75rem;
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.card-google-review__rating {
+		display: flex;
+		gap: 0.12rem;
+		color: #f4b400;
+	}
+
+	.card-google-review__verified {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		margin: 0;
+		padding: 0.2rem 0.55rem;
+		border-radius: 999px;
+		background: var(--color-surface);
+		color: var(--color-text);
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		text-transform: uppercase;
+	}
+
+	.card-google-review__verified :global(.icon) {
+		color: var(--color-primary);
+		flex-shrink: 0;
+	}
+
+	.card-google-review__quote {
+		flex: 1;
+		margin: 0 0 var(--spacing-md);
+		font-size: 0.98rem;
+		line-height: 1.5;
+		overflow-wrap: break-word;
+		white-space: pre-line;
+	}
+
+	.card-google-review__author {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-sm);
+		margin-top: auto;
+	}
+
+	.card-google-review__avatar {
+		display: grid;
+		place-items: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		flex-shrink: 0;
+		border-radius: 50%;
+		background: var(--color-inverse);
+		color: var(--color-on-primary);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+	}
+
+	.card-google-review__name {
+		margin: 0;
+		font-weight: 700;
+		line-height: 1.25;
+		overflow-wrap: break-word;
+	}
+
+	.card-google-review__meta {
+		margin: 0.15rem 0 0;
+		color: var(--color-text-muted);
+		font-size: 0.82rem;
+	}
+</style>

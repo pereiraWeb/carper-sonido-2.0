@@ -4,16 +4,28 @@
  * these CSS custom properties instead of hardcoding values, so changing a
  * value here updates the whole site at once. There is intentionally no
  * parallel `theme.ts`/JS config for this — see README section 13.1.
+ *
+ * Brand palette inverted for readability: charcoal becomes text, white
+ * becomes the page. Photo heroes keep a dark overlay + light type via
+ * `--color-on-media`.
  */
 :root {
-  --color-primary: #0d9488;
-  --color-secondary: #4b5563;
+  --color-primary: #888888;
+  --color-secondary: #b0b0b0;
+  --color-accent: #00e5ff;
   --color-background: #ffffff;
-  --color-surface: #f9fafb;
-  --color-text: #111827;
-  --color-text-muted: #6b7280;
-  --color-border: #e5e7eb;
-  --color-bg-overlay: rgba(0, 0, 0, 0.463);
+  --color-surface: #f5f5f5;
+  --color-text: #121212;
+  --color-text-muted: #444444;
+  --color-border: #e0e0e0;
+  --color-bg-overlay: rgba(18, 18, 18, 0.58);
+  /* Text/icons sitting on charcoal fills (primary buttons). */
+  --color-on-primary: #ffffff;
+  /* Charcoal fill for primary actions on light surfaces. */
+  --color-inverse: #121212;
+  /* Light type on photo heroes and other dark media. */
+  --color-on-media: #e0e0e0;
+  --color-on-media-muted: #b0b0b0;
 
   /*
    * System fonts on purpose — `system-ui` resolves to whatever font each OS
@@ -26,10 +38,10 @@
    * before reaching for Google Fonts or another font-hosting <link> — those
    * add an extra render-blocking network request per visit.
    */
-  --font-base: system-ui, sans-serif;
-  --font-heading: system-ui, sans-serif;
+  --font-base: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-heading: "Archivo", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
 
-  --radius-base: 8px;
+  --radius-base: 4px;
   --max-width: 1200px;
 
   --spacing-xs: 0.5rem;

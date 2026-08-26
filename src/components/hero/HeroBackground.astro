@@ -40,7 +40,7 @@ const {
 	secondaryCtaText,
 	secondaryCtaHref = heroContent.background.secondaryCtaHref,
 	image = imageFallbacks.photo,
-	align = 'left',
+	align = 'center',
 	height = heroContent.background.height,
 	backgroundColor,
 	backgroundImage = image,
@@ -72,21 +72,24 @@ const style = backgroundStyle({ backgroundColor, backgroundImage }, { '--hero-he
 		width: 100%;
 		display: flex;
 		align-items: center;
-		min-height: var(--hero-height, auto);
+		min-height: 100vh;
+		min-height: 100dvh;
 		padding-block: var(--spacing-xl);
-		background-color: var(--color-primary);
-		color: var(--color-background);
+		background-color: #121212;
+		color: var(--color-on-media);
 	}
 
 	.hero-bg__overlay {
 		position: absolute;
 		inset: 0;
-		background-color: var(--color-bg-overlay) ;
+		background:
+			linear-gradient(180deg, rgba(18, 18, 18, 0.28) 0%, rgba(18, 18, 18, 0.78) 100%),
+			var(--color-bg-overlay);
 	}
 
 	:global(.hero-bg__inner) {
 		position: relative;
-		max-width: 640px;
+		max-width: 860px;
 	}
 
 	.hero-bg--center {
@@ -96,6 +99,19 @@ const style = backgroundStyle({ backgroundColor, backgroundImage }, { '--hero-he
 
 	.hero-bg--center :global(.hero-bg__inner) {
 		margin-inline: auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.hero-bg--center .hero-bg__title,
+	.hero-bg--center .hero-bg__description {
+		text-align: center;
+	}
+
+	.hero-bg--center .hero-bg__description {
+		margin-inline: auto;
 	}
 
 	.hero-bg--center .hero-bg__actions {
@@ -103,14 +119,18 @@ const style = backgroundStyle({ backgroundColor, backgroundImage }, { '--hero-he
 	}
 
 	.hero-bg__title {
-		color: var(--color-background);
-		font-size: clamp(2.25rem, 5vw, 3.75rem);
-		line-height: 1.1;
+		color: var(--color-on-media);
+		font-size: clamp(1.85rem, 5vw, 3.6rem);
+		line-height: 1.08;
+		letter-spacing: -0.03em;
+		overflow-wrap: break-word;
 	}
 
 	.hero-bg__description {
-		color: color-mix(in srgb, var(--color-background) 85%, transparent);
+		color: var(--color-on-media-muted);
 		font-size: 1.15rem;
+		max-width: 38rem;
+		overflow-wrap: break-word;
 	}
 
 	.hero-bg__actions {
