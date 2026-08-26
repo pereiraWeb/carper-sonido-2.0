@@ -32,8 +32,12 @@ function isActive(href: string): boolean {
 		data-label-open="Abrir menú de navegación"
 		data-label-close="Cerrar menú de navegación"
 	>
-		<Icon name="menu" class="nav-menu__toggle-icon nav-menu__toggle-icon--open" />
-		<Icon name="close" class="nav-menu__toggle-icon nav-menu__toggle-icon--close" />
+		<span class="nav-menu__toggle-icon nav-menu__toggle-icon--open">
+			<Icon name="menu" size={22} />
+		</span>
+		<span class="nav-menu__toggle-icon nav-menu__toggle-icon--close">
+			<Icon name="close" size={22} />
+		</span>
 	</button>
 	<ul id={panelId} class:list={['nav-menu', `nav-menu--${align}`]}>
 		{
@@ -159,6 +163,11 @@ function isActive(href: string): boolean {
 		cursor: pointer;
 	}
 
+	.nav-menu__toggle-icon {
+		display: grid;
+		place-items: center;
+	}
+
 	.nav-menu__toggle-icon--close {
 		display: none;
 	}
@@ -168,7 +177,7 @@ function isActive(href: string): boolean {
 	}
 
 	.nav-menu-root--open .nav-menu__toggle-icon--close {
-		display: block;
+		display: grid;
 	}
 
 	.nav-menu {
@@ -367,8 +376,11 @@ function isActive(href: string): boolean {
 		}
 
 		.nav-menu__dropdown li a {
-			padding: 0.5rem 0;
+			padding: 0.8rem 0;
 			border-bottom: none;
+			font-size: 1.05rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
 		}
 	}
 </style>

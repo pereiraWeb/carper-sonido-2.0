@@ -13,8 +13,8 @@ import 'swiper/css';
 					<ResponsiveImage
 						src={brand.image || imageFallbacks.photo}
 						alt={brand.name}
-						width={200}
-						height={80}
+						width={400}
+						height={160}
 					/>
 				</div>
 			))}
@@ -36,11 +36,11 @@ import 'swiper/css';
 			new Swiper(root, {
 				modules: [Autoplay, FreeMode, A11y],
 				slidesPerView: 'auto',
-				spaceBetween: 56,
+				spaceBetween: 84,
 				loop: true,
 				grabCursor: true,
 				allowTouchMove: true,
-				speed: reduceMotion ? 600 : 5000,
+				speed: reduceMotion ? 600 : 3300,
 				freeMode: {
 					enabled: true,
 					momentum: false,
@@ -86,13 +86,13 @@ import 'swiper/css';
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 3.5rem;
+		height: 7rem;
 	}
 
 	:global(.brands-swiper img) {
 		width: auto;
-		max-width: 9rem;
-		height: 2.4rem;
+		max-width: 18rem;
+		height: 4.8rem;
 		object-fit: contain;
 		pointer-events: none;
 	}
