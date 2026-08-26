@@ -133,10 +133,24 @@ const boxStyle = backgroundStyle({ backgroundColor: boxBackgroundColor, backgrou
 	}
 
 	.cta-boxed__actions {
-		display: flex;
-		flex-wrap: wrap;
+		display: inline-grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
 		justify-content: center;
 		gap: var(--spacing-sm);
 		margin-top: var(--spacing-md);
+		max-width: 100%;
+	}
+
+	.cta-boxed__actions :global(.btn) {
+		width: 100%;
+	}
+
+	@media (max-width: 520px) {
+		.cta-boxed__actions {
+			grid-auto-flow: row;
+			width: 100%;
+			max-width: 16rem;
+		}
 	}
 </style>

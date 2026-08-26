@@ -90,6 +90,7 @@ const errorId = `${id}-error`;
 		display: flex;
 		flex-direction: column;
 		gap: 0.3rem;
+		min-width: 0;
 	}
 
 	.form-field__label {
@@ -97,6 +98,7 @@ const errorId = `${id}-error`;
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
 		color: var(--color-text-muted);
+		overflow-wrap: anywhere;
 	}
 
 	.form-field__label--hidden {
@@ -114,6 +116,10 @@ const errorId = `${id}-error`;
 	.form-field input,
 	.form-field textarea,
 	.form-field select {
+		width: 100%;
+		max-width: 100%;
+		min-width: 0;
+		box-sizing: border-box;
 		font: inherit;
 		padding: 0.75rem 0.85rem;
 		/* `--color-text-muted` (not the fainter `--color-border`) so the field's

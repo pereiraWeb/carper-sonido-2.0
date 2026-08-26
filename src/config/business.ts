@@ -56,6 +56,12 @@ export interface BusinessInfo {
   logoWidth?: number;
   logoHeight?: number;
   address: BusinessAddress;
+  /**
+   * Official Google Place ID for the business listing (starts with `ChIJ`).
+   * Used by `MapEmbed` with the Embed API. Short hashes / CIDs are ignored
+   * because they make the keyless embed show a world map instead of the ficha.
+   */
+  mapsPlaceId?: string;
   hours: BusinessHours[];
   social: BusinessSocialLinks;
   siteUrl: string;
@@ -89,6 +95,7 @@ export const business: BusinessInfo = {
     postalCode: '36202',
     country: 'España',
   },
+  mapsPlaceId: 'DNuTmiJYCwKHSGJ73',
   hours: [],
   social: {
     facebook: 'https://www.facebook.com/Carper-Sonido-102586472187044',

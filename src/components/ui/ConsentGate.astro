@@ -125,13 +125,21 @@ const style = aspectRatio ? `aspect-ratio: ${aspectRatio};` : undefined;
 	}
 
 	.consent-gate__button {
-		padding: 0.6rem 1.25rem;
+		box-sizing: border-box;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 16rem;
+		min-height: 3rem;
+		padding: 0.75rem 1.5rem;
 		border: none;
 		border-radius: var(--radius-base);
 		background-color: var(--color-primary);
 		color: var(--color-background);
 		font: inherit;
+		font-size: 0.95rem;
 		font-weight: 600;
+		line-height: 1.2;
 		cursor: pointer;
 	}
 </style>

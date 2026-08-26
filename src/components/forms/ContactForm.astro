@@ -409,8 +409,11 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 
 <style>
 	.contact-form {
+		position: relative;
 		display: flex;
 		flex-direction: column;
+		width: 100%;
+		min-width: 0;
 		gap: var(--spacing-sm);
 	}
 
@@ -420,7 +423,7 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 
 	.contact-form__row--inline {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 		gap: var(--spacing-sm);
 	}
 
@@ -431,7 +434,9 @@ const honeypotId = `${HONEYPOT_FIELD_NAME}-${Math.random().toString(36).slice(2,
 		overflow: hidden;
 		clip: rect(0 0 0 0);
 		white-space: nowrap;
-		left: -9999px;
+		border: 0;
+		padding: 0;
+		margin: -1px;
 	}
 
 	.contact-form__noscript {

@@ -121,10 +121,24 @@ const style = backgroundStyle({ backgroundColor, backgroundImage }, { '--cta-cen
 	}
 
 	.cta-centered__actions {
-		display: flex;
-		flex-wrap: wrap;
+		display: inline-grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
 		justify-content: center;
 		gap: var(--spacing-sm);
 		margin-top: var(--spacing-md);
+		max-width: 100%;
+	}
+
+	.cta-centered__actions :global(.btn) {
+		width: 100%;
+	}
+
+	@media (max-width: 520px) {
+		.cta-centered__actions {
+			grid-auto-flow: row;
+			width: 100%;
+			max-width: 16rem;
+		}
 	}
 </style>

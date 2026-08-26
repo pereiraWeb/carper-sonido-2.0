@@ -43,7 +43,7 @@ const style = backgroundStyle({ backgroundColor, backgroundImage }, { '--cta-spl
 			/>
 		</div>
 		<div class="cta-split__action">
-			<Button href={ctaHref} size="lg" variant="inverse" track="cta_click" trackLabel={ctaText}>{ctaText}</Button>
+			<Button href={ctaHref} variant="inverse" track="cta_click" trackLabel={ctaText}>{ctaText}</Button>
 		</div>
 	</Container>
 </section>
@@ -120,6 +120,10 @@ const style = backgroundStyle({ backgroundColor, backgroundImage }, { '--cta-spl
 		flex-shrink: 0;
 	}
 
+	.cta-split__action :global(.btn) {
+		width: 16rem;
+	}
+
 	@media (max-width: 720px) {
 		:global(.cta-split__inner) {
 			flex-direction: column;
@@ -131,7 +135,7 @@ const style = backgroundStyle({ backgroundColor, backgroundImage }, { '--cta-spl
 		}
 
 		.cta-split__action :global(.btn) {
-			width: 100%;
+			width: 16rem;
 		}
 	}
 </style>

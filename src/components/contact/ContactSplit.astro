@@ -39,6 +39,10 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 </section>
 
 <style>
+	.contact-split {
+		overflow-x: clip;
+	}
+
 	/* :global() because `Container`/`ContactForm`/`MapEmbed` render this class on an element outside this component's scoped-CSS boundary. */
 	/* No `align-items` override: Grid's default `stretch` makes both columns
 	   match the taller one's height, and the map below grows to fill the
@@ -103,7 +107,27 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 	}
 
 	@media (max-width: 768px) {
+		.contact-split {
+			padding-inline: var(--spacing-md);
+		}
+
 		:global(.contact-split__grid) {
+			grid-template-columns: minmax(0, 1fr);
+			justify-items: center;
+			gap: var(--spacing-lg);
+			padding-inline: var(--spacing-md);
+		}
+
+		:global(.contact-split__form) {
+			width: 100%;
+			max-width: min(36rem, 100%);
+			margin-inline: auto;
+			padding: var(--spacing-md) 0;
+			justify-content: flex-start;
+			box-sizing: border-box;
+		}
+
+		:global(.contact-split__form .contact-form__row--inline) {
 			grid-template-columns: 1fr;
 		}
 
@@ -113,7 +137,11 @@ const style = backgroundStyle({ backgroundColor, backgroundImage });
 		}
 
 		.contact-split__info {
+			width: 100%;
+			max-width: min(36rem, 100%);
+			min-width: 0;
 			height: auto;
+			margin-inline: auto;
 		}
 	}
 </style>

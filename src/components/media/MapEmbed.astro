@@ -1,6 +1,6 @@
 ---
 import ConsentGate from '../ui/ConsentGate.astro';
-import { business } from '../../config/business';
+import { business, geoCoordinates } from '../../config/business';
 import { integrations } from '../../config/integrations';
 
 /**
@@ -8,32 +8,51 @@ import { integrations } from '../../config/integrations';
  * sets Google's cookies) until marketing consent is granted.
  *
  * Uses the official Google Maps Embed API (`.../maps/embed/v1/place`) when
- * `PUBLIC_GOOGLE_MAPS_API_KEY` is set in `integrations.ts` — this gives a
- * stable, officially supported embed and, unlike the keyless URL, needs an
- * API key with the "Maps Embed API" enabled in Google Cloud Console (see
- * `.env.example`). Without a key, falls back to the free, keyless
- * `google.com/maps` embed so the component still works out of the box.
+ * `PUBLIC_GOOGLE_MAPS_API_KEY` is set in `integrations.ts`. Without a key,
+ * falls back to the free, keyless `google.com/maps` embed.
+ *
+ * `place_id:` is only used with a real Google Place ID (`ChIJ…`). Other
+ * IDs (short hashes, CIDs) make the keyless embed render a tiled world
+ * map, so those fall back to a name + address search that opens the ficha.
  */
 export interface Props {
 	/** Full postal address to search for. Defaults to the address configured in `business.ts`. */
 	address?: string;
+	/**
+	 * Google Maps place id for the company listing. Defaults to
+	 * `business.mapsPlaceId`. Only applied when it looks like an official
+	 * Place ID (`ChIJ…`).
+	 */
+	placeId?: string;
 	title?: string;
 	class?: string;
 }
 
 const {
-	address = `${business.address.street}, ${business.address.city}, ${business.address.country}`,
+	address = `${business.address.street}, ${business.address.postalCode} ${business.address.city}, ${business.address.country}`,
+	placeId = business.mapsPlaceId,
 	title = `Mapa de la ubicación de ${business.name}`,
 	class: className,
 } = Astro.props;
 
 const { googleMapsApiKey } = integrations.maps;
+const isOfficialPlaceId = Boolean(placeId && /^ChIJ[\w-]+$/.test(placeId));
+const searchQuery = `${business.name}, ${address}`;
+const query = isOfficialPlaceId ? `place_id:${placeId}` : searchQuery;
+const { latitude, longitude } = geoCoordinates;
 
 const src = googleMapsApiKey
-	? `https://www.google.com/maps/embed/v1/place?key=${encodeURIComponent(googleMapsApiKey)}&q=${encodeURIComponent(address)}`
-	: `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+	? `https://www.google.com/maps/embed/v1/place?key=${encodeURIComponent(googleMapsApiKey)}&q=${encodeURIComponent(query)}`
+	: `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&ll=${latitude},${longitude}&hl=es&z=17&ie=UTF8&iwloc=B&output=embed`;
 ---
 
 <ConsentGate category="marketing" aspectRatio="16 / 9" class={className}>
-	<iframe src={src} title={title} loading="lazy" style="width: 100%; height: 100%; aspect-ratio: 16 / 9; border: 0;"></iframe>
+	<iframe
+		src={src}
+		title={title}
+		loading="lazy"
+		referrerpolicy="no-referrer-when-downgrade"
+		allowfullscreen
+		style="width: 100%; height: 100%; aspect-ratio: 16 / 9; border: 0;"
+	></iframe>
 </ConsentGate>
