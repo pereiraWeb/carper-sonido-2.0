@@ -30,7 +30,7 @@ function escapeHtml(value: string): string {
  * - `RESEND_API_KEY`: required in production. If missing in production, the
  *   send fails outright (never a fake success). In development it's optional —
  *   without it, the submission is only logged (no personal data) and treated
- *   as a successful "simulated" send so the starter works end-to-end locally.
+ *   as a successful "simulated" send so local development works end-to-end.
  * - `CONTACT_TO_EMAIL`: inbox that receives submissions. Defaults to `business.email`.
  * - `CONTACT_FROM_EMAIL`: the full sender, e.g. `Mi Empresa <formularios@empresa.es>`,
  *   using an address verified in your Resend domain. Used exactly as provided —

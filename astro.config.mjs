@@ -7,7 +7,7 @@ import { getConfigIssues } from './src/lib/configCheck.ts';
 
 /**
  * Fails `astro build` (production builds, including on Vercel) if
- * `src/config/business.ts` still has starter placeholder values — e.g. the
+ * `src/config/business.ts` still has placeholder values — e.g. the
  * default "Business Name" or "https://example.com". This never runs during
  * `astro dev`/`astro preview` (the `astro:build:start` hook only fires for
  * `astro build`), so it can't get in the way of local development.
@@ -27,7 +27,7 @@ function productionConfigGuard() {
 
         const details = issues.map((issue) => `  - ${issue.field}: ${issue.message}`).join('\n');
         throw new Error(
-          `\nProduction build blocked: src/config/business.ts still has starter placeholder values:\n${details}\n\n` +
+          `\nProduction build blocked: src/config/business.ts still has placeholder values:\n${details}\n\n` +
             'Fix these before publishing, or set SKIP_CONFIG_GUARD=true to bypass on purpose (e.g. a staging/demo build).\n',
         );
       },

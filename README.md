@@ -1,10 +1,10 @@
-# 360 Presencia Starter
+# Carper Sonido
 
-Plantilla de web corporativa hecha con [Astro](https://astro.build). Incluye todas las secciones típicas de una web de empresa (portada, servicios, equipo, testimonios, preguntas frecuentes, contacto...), cada una con **varias variantes visuales** para elegir, y un **formulario de contacto funcional** que envía emails de verdad mediante [Resend](https://resend.com).
+Web de Carper Sonido (`web-carper-sonido`), hecha con [Astro](https://astro.build). Incluye las secciones de la empresa (portada, servicios, reseñas, contacto...) y un **formulario de contacto funcional** que envía emails de verdad mediante [Resend](https://resend.com).
 
-Todo el contenido (textos, colores, datos de la empresa, menú...) está centralizado en archivos de configuración fáciles de editar, en `src/config/`. **No hace falta tocar el diseño ni el código de los componentes para lanzar tu web** — solo rellenar esos archivos con tus datos reales.
+Todo el contenido (textos, colores, datos de la empresa, menú...) está centralizado en archivos de configuración fáciles de editar, en `src/config/`.
 
-Esta guía explica, paso a paso y sin tecnicismos, cómo convertir este starter en la web real de una empresa.
+Esta guía explica, paso a paso y sin tecnicismos, cómo trabajar con el proyecto.
 
 ---
 
@@ -208,7 +208,7 @@ Cada página muestra también una fecha "Última actualización", controlada des
 
 ## 5. El formulario de contacto (envío de emails reales)
 
-Este starter incluye un formulario de contacto completo y ya funcional, no una simple maqueta. El recorrido es:
+Este proyecto incluye un formulario de contacto completo y ya funcional, no una simple maqueta. El recorrido es:
 
 ```
 Visitante rellena el formulario (ContactForm)
@@ -222,7 +222,7 @@ Visitante rellena el formulario (ContactForm)
 
 Incluye de serie: validación de todos los campos (nombre, email, teléfono, mensaje), casilla de consentimiento RGPD obligatoria, protección anti-spam (honeypot invisible + límite de envíos por IP), mensajes de error accesibles y página de "gracias" tras el envío (`/thank-you`).
 
-**Para que envíe emails de verdad necesitas una cuenta gratuita en [Resend](https://resend.com)** — es el único servicio externo obligatorio de todo el starter. Sin configurarlo, en tu ordenador (`npm run dev`) el formulario sigue funcionando pero solo simula el envío (lo verás en la consola del terminal); en producción, si falta la clave, el formulario avisará de un error en vez de fingir que se envió.
+**Para que envíe emails de verdad necesitas una cuenta gratuita en [Resend](https://resend.com)** — es el único servicio externo obligatorio de todo el proyecto. Sin configurarlo, en tu ordenador (`npm run dev`) el formulario sigue funcionando pero solo simula el envío (lo verás en la consola del terminal); en producción, si falta la clave, el formulario avisará de un error en vez de fingir que se envió.
 
 ### Cómo configurar Resend (5 minutos)
 
@@ -239,7 +239,7 @@ Incluye de serie: validación de todos los campos (nombre, email, teléfono, men
 
 ## 6. Cookies, consentimiento y analítica (GA4, Google Ads, Meta Pixel)
 
-Este starter incluye un **gestor de consentimiento de cookies real** (no un simple aviso decorativo): nada de analítica o marketing se carga hasta que el visitante lo permite explícitamente, categoría por categoría.
+Este proyecto incluye un **gestor de consentimiento de cookies real** (no un simple aviso decorativo): nada de analítica o marketing se carga hasta que el visitante lo permite explícitamente, categoría por categoría.
 
 ### 6.1 Cómo funciona el gestor de consentimiento
 
@@ -321,7 +321,7 @@ Se define en un único sitio: `business.language` (ver [sección 4.1](#41-datos-
 - `<html lang="es-ES">` en `BusinessLayout.astro`.
 - `<meta property="og:locale" content="es_ES">` (formato con guion bajo que exigen Facebook/WhatsApp).
 
-Este starter es **monolingüe** (una sola versión de idioma). Si en el futuro creas una versión en otro idioma de la misma web, ese es el momento de añadir etiquetas `hreflang` — no hace falta antes, y añadirlas sin tener contenido real en otro idioma sería contraproducente para el SEO.
+Este proyecto es **monolingüe** (una sola versión de idioma). Si en el futuro creas una versión en otro idioma de la misma web, ese es el momento de añadir etiquetas `hreflang` — no hace falta antes, y añadirlas sin tener contenido real en otro idioma sería contraproducente para el SEO.
 
 ### 7.2 Título, descripción, canonical y redes sociales de cada página
 
@@ -408,7 +408,7 @@ Solo `RESEND_API_KEY` y `CONTACT_FROM_EMAIL` son obligatorias para producción; 
 
 ## 9. Qué necesitas para tener una web 100% real en producción
 
-Checklist de todo lo que hay que tener/decidir para pasar de "starter de ejemplo" a "web real de un negocio":
+Checklist de todo lo que hay que tener/decidir para la web:
 
 ### Imprescindible
 
@@ -440,7 +440,7 @@ Checklist de todo lo que hay que tener/decidir para pasar de "starter de ejemplo
 
 ## 10. Cómo publicar la web (Vercel)
 
-Este starter está preparado para desplegarse en [Vercel](https://vercel.com) (el mismo equipo que mantiene Next.js, con plan gratuito más que suficiente para una web corporativa).
+Este proyecto está preparado para desplegarse en [Vercel](https://vercel.com) (el mismo equipo que mantiene Next.js, con plan gratuito más que suficiente para una web corporativa).
 
 1. Sube el proyecto a un repositorio de GitHub (o GitLab/Bitbucket).
 2. Entra en [vercel.com](https://vercel.com) → **Add New → Project** → selecciona tu repositorio.
@@ -488,13 +488,13 @@ Este starter está preparado para desplegarse en [Vercel](https://vercel.com) (e
 
 ## 13. Arquitectura interna: temas, configuración, layouts y componentes compartidos
 
-Esta sección es para quien vaya a tocar la estructura interna del proyecto (no solo el contenido) — explica varias decisiones de arquitectura tomadas a propósito, para que se mantengan coherentes según el starter vaya creciendo.
+Esta sección es para quien vaya a tocar la estructura interna del proyecto (no solo el contenido) — explica varias decisiones de arquitectura tomadas a propósito, para que se mantengan coherentes según el proyecto vaya creciendo.
 
 ### 13.1 Una sola fuente de verdad para el diseño: `src/styles/tokens.css`
 
 Todo el diseño (colores, tipografías, radio de bordes, espaciados y ancho máximo de contenido) vive **únicamente** en `src/styles/tokens.css`, como variables CSS estándar (`--color-primary`, `--font-base`, `--radius-base`, `--max-width`...). Los componentes usan siempre `var(--nombre-variable)`, nunca un valor de color/tamaño escrito a mano.
 
-No existe un `theme.ts` en paralelo — existió en versiones antiguas del starter, pero no lo usaba ningún componente y sus valores podían quedar desincronizados de `tokens.css`, así que se eliminó. Para cambiar el diseño del sitio:
+No existe un `theme.ts` en paralelo — existió en versiones antiguas del proyecto, pero no lo usaba ningún componente y sus valores podían quedar desincronizados de `tokens.css`, así que se eliminó. Para cambiar el diseño del sitio:
 
 1. Abre `src/styles/tokens.css`.
 2. Cambia el valor de la variable que quieras (por ejemplo `--color-primary: #0d9488;` por tu color de marca).
@@ -517,7 +517,7 @@ Regla general al añadir configuración nueva: si es un **texto o dato que cambi
 
 ### 13.3 Contenido: archivos TypeScript, no Content Collections
 
-Este starter gestiona `services`, `team`, `testimonials`, etc. como **arrays de TypeScript** en `src/config/*Content.ts`, no como [Content Collections](https://docs.astro.build/en/guides/content-collections/) de Astro. Es una decisión deliberada, no una migración a medias:
+Este proyecto gestiona `services`, `team`, `testimonials`, etc. como **arrays de TypeScript** en `src/config/*Content.ts`, no como [Content Collections](https://docs.astro.build/en/guides/content-collections/) de Astro. Es una decisión deliberada, no una migración a medias:
 
 - Los datos de una web de empresa (servicios, equipo, testimonios) cambian con poca frecuencia y los edita normalmente quien mantiene el código, no un equipo de redacción — un array tipado en TypeScript, con autocompletado y comprobación de tipos vía `npm run check`, es más simple que añadir un sistema de colecciones con sus propios esquemas.
 - Si en el futuro añades un blog con posts frecuentes editados por alguien sin conocimientos técnicos, ese es el momento de introducir Content Collections (creando `src/content.config.ts` con sus esquemas) — solo para ese tipo de contenido, sin migrar el resto.
@@ -526,7 +526,7 @@ Si eliges esa vía más adelante, valida siempre `slug` (único), imágenes, ord
 
 ### 13.4 Aviso de configuración incompleta al hacer build de producción
 
-`astro.config.mjs` incluye una comprobación (`src/lib/configCheck.ts`) que **bloquea `npm run build`** si `src/config/business.ts` todavía tiene alguno de los valores de ejemplo del starter (`"Business Name"`, `"https://example.com"`, `"info@example.com"`, la dirección de ejemplo...). Esto evita el error, fácil de cometer, de publicar la web con datos de mentira porque se olvidó rellenar `business.ts`.
+`astro.config.mjs` incluye una comprobación (`src/lib/configCheck.ts`) que **bloquea `npm run build`** si `src/config/business.ts` todavía tiene alguno de los valores de ejemplo (`"Business Name"`, `"https://example.com"`, `"info@example.com"`, la dirección de ejemplo...). Esto evita el error, fácil de cometer, de publicar la web con datos de mentira porque se olvidó rellenar `business.ts`.
 
 - Solo afecta a `npm run build` (y por tanto al build que hace Vercel al desplegar) — nunca a `npm run dev` ni `npm run preview`, así que no molesta durante el desarrollo.
 - Si el build falla, el propio mensaje de error lista exactamente qué campos de `business.ts` hay que corregir.
@@ -568,7 +568,7 @@ Si al añadir una variante nueva detectas que estás repitiendo un bloque de mar
 
 ## 14. Accesibilidad
 
-El starter sigue las pautas WCAG 2.1 nivel AA de serie. Si añades componentes nuevos o modificas los existentes, mantén estos criterios:
+El proyecto sigue las pautas WCAG 2.1 nivel AA de serie. Si añades componentes nuevos o modificas los existentes, mantén estos criterios:
 
 ### 14.1 Navegación por teclado
 
@@ -621,7 +621,7 @@ Todas las fotos del sitio (equipo, testimonios, servicios, tarjetas, visuales de
 
 ### 15.1 Por qué un componente propio y no `astro:assets`
 
-`astro:assets` (el `<Image>`/`<Picture>` de Astro) solo optimiza imágenes que puede ver en su grafo de build, es decir, archivos importados desde `src/`. En este starter, en cambio, **todas** las fotos vienen de una ruta en texto dentro de un archivo de configuración (`business.logo`, `team[].image`, `services[].image`...) que vive en `public/`, precisamente para que se pueda cambiar una foto sustituyendo un archivo y editando una ruta, sin tocar código ni imports. Migrar todo el sitio a `astro:assets` habría significado convertir cada una de esas rutas en un import — rompiendo esa simplicidad.
+`astro:assets` (el `<Image>`/`<Picture>` de Astro) solo optimiza imágenes que puede ver en su grafo de build, es decir, archivos importados desde `src/`. En este proyecto, en cambio, **todas** las fotos vienen de una ruta en texto dentro de un archivo de configuración (`business.logo`, `team[].image`, `services[].image`...) que vive en `public/`, precisamente para que se pueda cambiar una foto sustituyendo un archivo y editando una ruta, sin tocar código ni imports. Migrar todo el sitio a `astro:assets` habría significado convertir cada una de esas rutas en un import — rompiendo esa simplicidad.
 
 `ResponsiveImage.astro` es la alternativa: un `<img>` fino y predecible que sí resuelve, en todo el sitio, lo que de verdad importa para rendimiento:
 
@@ -629,7 +629,7 @@ Todas las fotos del sitio (equipo, testimonios, servicios, tarjetas, visuales de
 - **`loading="lazy"` + `decoding="async"` por defecto** en todas las fotos, para no bloquear la carga inicial de la página con imágenes que ni siquiera son visibles todavía (más abajo del scroll).
 - **Prop `priority`** para la *única* imagen de cada página que sea su candidata a LCP (*Largest Contentful Paint*, la otra gran métrica Core Web Vitals) — normalmente el visual del hero. Con `priority` pasa a `loading="eager"` + `fetchpriority="high"`, para que el navegador la descargue inmediatamente en vez de esperar a "descubrirla" durante el renderizado. Ya está activado por defecto en `HeroSplit` (`priority={true}`) y en la imagen de `services/[slug].astro`; pásalo también en `TextImage`/`CardImage` si alguna instancia concreta queda justo debajo del hero, visible sin hacer scroll.
 - **Fallback automático si una imagen falla**: si el archivo de una foto no existe o no carga, se sustituye al vuelo por `public/img/fallback.webp` (o, en el caso del logo, por el SVG placeholder) en vez de mostrar el icono de "imagen rota" del navegador. Lo gestiona `src/lib/imageFallback.ts`, ya conectado en `BusinessLayout.astro` — no requiere nada por tu parte.
-- **`sizes`/`srcset` opcionales**: si para una foto concreta sí tienes varias resoluciones reales (por ejemplo, exportaste un hero a 800px y a 1600px de ancho), puedes pasarlas con las props `srcset`/`sizes` de `ResponsiveImage` para que el navegador elija la más adecuada según el dispositivo. El starter no las genera automáticamente porque no reprocesa las fotos que subes a `public/`.
+- **`sizes`/`srcset` opcionales**: si para una foto concreta sí tienes varias resoluciones reales (por ejemplo, exportaste un hero a 800px y a 1600px de ancho), puedes pasarlas con las props `srcset`/`sizes` de `ResponsiveImage` para que el navegador elija la más adecuada según el dispositivo. El proyecto no las genera automáticamente porque no reprocesa las fotos que subes a `public/`.
 
 ### 15.2 Fallbacks centralizados — `src/config/images.ts`
 
@@ -653,7 +653,7 @@ Para una imagen puntual especialmente pesada (p. ej. un fondo de hero muy grande
 
 ## 16. Rendimiento: fuentes, CSS/JS y Core Web Vitals
 
-El starter está pensado para puntuar bien en Lighthouse / PageSpeed sin trucos raros. Esta sección resume las decisiones y cómo comprobarlas.
+El proyecto está pensado para puntuar bien en Lighthouse / PageSpeed sin trucos raros. Esta sección resume las decisiones y cómo comprobarlas.
 
 ### 16.1 Fuentes
 

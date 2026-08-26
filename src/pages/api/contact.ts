@@ -124,7 +124,7 @@ export const POST: APIRoute = async (context) => {
   // stop abuse in production, verify a token here (e.g. Cloudflare Turnstile,
   // hCaptcha, reCAPTCHA) before continuing, using a server-side secret from
   // an env var. Not enabled by default to avoid requiring a third-party
-  // account for a starter template.
+  // account for this project.
 
   const data: ContactData = {
     name: sanitizeText(String(raw.name ?? '')),

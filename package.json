@@ -1,5 +1,6 @@
 {
-  "name": "360-presencia-starter",
+  "name": "web-carper-sonido",
+  "description": "Carper Sonido",
   "type": "module",
   "version": "0.0.1",
   "engines": {

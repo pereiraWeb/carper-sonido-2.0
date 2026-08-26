@@ -6,7 +6,7 @@ export interface ConfigIssue {
 }
 
 /**
- * Starter placeholder values that must never reach a real production
+ * Placeholder values that must never reach a real production
  * deploy. Each check compares against the exact default shipped in
  * `src/config/business.ts` — if you've genuinely changed a field to
  * something else (even another placeholder-looking value), it won't match
@@ -41,7 +41,7 @@ const PLACEHOLDER_CHECKS: Array<{ field: string; isPlaceholder: () => boolean; m
   },
 ];
 
-/** Returns every unresolved starter placeholder found in `business.ts`. Empty array means the config looks production-ready. */
+/** Returns every unresolved placeholder found in `business.ts`. Empty array means the config looks production-ready. */
 export function getConfigIssues(): ConfigIssue[] {
   return PLACEHOLDER_CHECKS.filter((check) => check.isPlaceholder()).map(({ field, message }) => ({ field, message }));
 }
