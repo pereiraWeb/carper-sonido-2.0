@@ -15,6 +15,8 @@ export interface Service {
   description: string;
   icon?: string;
   image?: string;
+  /** Optional looping muted video behind the service-page hero overlay. The still `image` remains as poster. */
+  heroVideo?: string;
   /** Longer copy shown on the individual service page. */
   content?: string;
   /** Bullet points shown on the individual service page. */
@@ -104,6 +106,7 @@ export const services: Service[] = [
     seoDescription:
       'Alquila altavoces, mesas de mezcla, microfonía, controladoras DJ, pantallas e iluminación en Vigo y Pontevedra. Presupuesto en 24h.',
     image: '/img/2018/10/mitchell-leach-593902-unsplash.jpg',
+    heroVideo: '/videos/12548280-hd_1920_1080_30fps.mp4',
     homeTitle: 'ALQUILERES DE SONIDO E IMAGEN',
     homeSubtitle: 'Alquilar sonido e iluminación en Vigo y Pontevedra',
     homeDescription: 'Expertos en backline para todo tipo de eventos, ya sean conferencias o conciertos grandes.',
